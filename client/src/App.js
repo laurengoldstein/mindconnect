@@ -5,11 +5,12 @@ import './App.css';
 import Navbar from './components/Navbar';
 import ProgressView from './views/ProgressView';
 import ProfileView from './views/ProfileView';
+import TrackingFormView from './views/TrackingFormView';
 import Error404View from './views/Error404View';
 
 
 function App() {
-let [users, setUsers] = useState([]);
+let [user, setUser] = useState([]);
 let [selectedUser] = useState({id: 1});
 let [data, setData] = useState([]);
 let [indicators, setIndicators] = useState([]);
@@ -20,7 +21,7 @@ let [indicators, setIndicators] = useState([]);
 useEffect(() => {
   fetch(`/user/${selectedUser.id}`)
     .then(res => res.json())
-    .then(json => {setUsers(json);})
+    .then(json => {setUser(json);})
     .catch(error => {
       console.log(`Server error: ${error.message}`)
     });
@@ -45,8 +46,9 @@ useEffect(() => {
      <Navbar/>
 
      <Routes>
-        <Route path="user/:id" element={<ProfileView users={users}/>} />
-        <Route path="progress" element={<ProgressView data={data}/>} />
+        <Route path="user/:id" element={<ProfileView user={user}/>} />
+        <Route path="progress" element={<ProgressView user={user} data={data}/>} />
+        <Route path="track" element={<TrackingFormView />} />
         <Route path="*" element={<Error404View />} />
      </Routes>
     </div>

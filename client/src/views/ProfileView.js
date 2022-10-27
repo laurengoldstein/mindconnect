@@ -3,13 +3,14 @@ import { Link, useParams } from 'react-router-dom';
 import Error404View from './Error404View';
 
 function ProfileView(props){
+
     return( 
     <div>
-        <h2>{props.users.firstName} {props.users.lastName}</h2>
+        <h2>{props.user.firstName} {props.user.lastName}</h2>
         <ul>
-            <li>{props.users.email}</li>
+            <li>{props.user.email}</li>
             {/* {
-                props.users.tracked_items.map((ti) => (
+                props.user.tracked_items.map((ti) => (
                     <li>
                         {ti.indicator}
                     </li>
