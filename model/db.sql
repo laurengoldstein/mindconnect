@@ -48,7 +48,9 @@ ALTER TABLE
 
 -- populating table with sample data
 INSERT INTO tracked_items (indicator)
-    VALUES('anxiety - intensity'), ('self-harm thoughts - frequency');
+    VALUES('anxiety - intensity'), ('self-harm thoughts - frequency'), ('sleep quality');
+    -- VALUES('ai'), ('sf'), ('sq');
+
 
 INSERT INTO user (firstName, lastName, password, email)
     VALUES ('Jane', 'Doe', 'janeDoe93.', 'jane_done@gmail.com'), ('John', 'Park', 'johnPark92!', 'john.park@gmail.com');
@@ -57,10 +59,21 @@ INSERT INTO tracked_items_user(user_id, tracked_items_id)
 VALUES
     (1, 1),
     (1, 2),
+    (1, 3),
     (2, 1);
 
 INSERT INTO data (tracked_items_id, date, value, user_id)
     VALUES(1, "2022-10-01", 5, 1), (2, "2022-10-01", 7, 2), (1, "2022-10-02", 5, 1), (2, "2022-10-02", 4, 2), 
     (1, "2022-10-03", 2, 1), (2, "2022-10-03", 5, 2), (1, "2022-10-04", 4, 1), 
-    (2, "2022-10-04", 4, 2), (1, "2022-10-05", 5, 1), (2, "2022-10-05", 3, 2);
+    (2, "2022-10-04", 4, 2), (1, "2022-10-05", 5, 1), (2, "2022-10-05", 3, 2), (1, "2022-10-01", 5, 1),
+    (2, "2022-10-01", 2, 1),
+    (1, "2022-10-02", 5, 1), 
+    (2, "2022-10-02", 5, 1), 
+    (3, "2022-10-02", 2, 1), 
+    (1, "2022-10-03", 2, 1),
+    (2, "2022-10-03", 1, 1), 
+    (1, "2022-10-04", 4, 1), 
+    (3, "2022-10-05", 1, 1),
+    (2, "2022-10-05", 2, 1),
+    (1, "2022-10-05", 3, 1);
 

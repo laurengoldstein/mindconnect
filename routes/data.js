@@ -19,36 +19,45 @@ function makeWhereFromFilters(d) {
   return filters.join(' AND ');
 }
 
-function joinToJson(result){
-let finalData = [];
+function joinToJson(result) {
+  let rows = result.data;
 
-  for(let i=0; i<=result.data.length; i++) {
-  let row0 = result.data[i];
-  
+  // Special case! No indicators found
+  if (rows.length === 0) {
+    return [];
+  }
 
-  console.log(row0);
+  // Array to store completed dayObjs
+  let days = [];  
 
-  let tracked_items = [];
-  if(row0.tracked_items_id){
-    tracked_items = result.data.map(ti => ({
-      id: ti.tracked_items_id,
-      indicator: ti.indicator,
-      value: ti.value,
-    }));
-  };
+  // Create first dayObj with first indicator
+  let row0 = rows.shift();
+  let dayObj = {
+    date: row0.date.toDateString(),
+    [row0.indicator]: row0.value
+  }
 
-  let data = {
-    id: row0.id,
-    date: row0.date,
-    user_id: row0.user_id,
-    tracked_items
-  };
-  finalData.push(data)
-  console.log(finalData);
-  };
+  // Loop over the rest of the rows
+  for (let row of rows) {
+    // Convert date obj to string
+    let dateStr = row.date.toDateString();
+    if (dayObj.date === dateStr) {
+      // Same day... add another indicator
+      dayObj[row.indicator] = row.value;
+    } else {
+      // New day... push dayObj and create new one
+      days.push(dayObj);
+      dayObj = {
+        date: dateStr,
+        [row.indicator]: row.value
+      };
+    }
+  }
 
+  // Push last dayObj
+  days.push(dayObj);
 
-return finalData
+  return days;
 }
 
 /* GET data with optional filters*/
@@ -65,8 +74,7 @@ router.get('/data', function(req,res,next) {
     }
     db(sql)
     .then(result => {
-      // res.send(joinToJson(result));
-      res.send(result.data)
+      res.send(joinToJson(result));
     })
     .catch(err => res.status(500).send(err));
 });

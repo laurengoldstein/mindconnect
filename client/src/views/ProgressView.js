@@ -1,39 +1,44 @@
 import React from 'react';
-import { LineChart, Line, CartesianGrid, XAxis, YAxis, Tooltip } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 
 
 function ProgressView(props) {
 
-const data = [{name: '2022-10-03', anxiety: 3, sleep: 6}, {name: '2022-10-04', anxiety: 4, sleep: 3}, {name: '2022-10-05', anxiety: 6, sleep: 8}];
-//For each data point of data, create an object that consists of date as a first key-value pair, and for each tracked_item_id add another key-value pair
-//do left-foin with tracked_items (in the api routes) so that the name of the indicator is in data 
-//for each unique tracked_items name generate a line
-const {tracked_items} = props.user;
+const data = props.data;
 
-let data1 = [];
-for(let data_point in props.data){
-    data1.push(
-        {
-        date: props.data[data_point].date
-        }
-        )
-}
+console.log(props.data)
+let colors = ['red', 'blue', 'purple', 'green', 'yellow', 'teal', 'magenta', 'orange', 'brown', 'black', 'lightblue']
 
 const renderLineChar = (
-    <LineChart width={400} height={400} data={data}>
-            <Line  type="monotone" dataKey='anxiety' stroke="#8884d8" />
-            <Line  type="monotone" dataKey='sleep' stroke="#8884d8" /> 
-        
+        <ResponsiveContainer width="50%" height="50%">
+                <LineChart
+                width={500}
+                height={300}
+                data={data}
+                margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
+                }}
+                >
+            { props.user.tracked_items &&
+                props.user.tracked_items.map(t=>
+                    <Line key={t.id} type="monotone" dataKey={t.indicator} stroke={colors[t.id]} />
+                    )
+            }
             <CartesianGrid stroke="#ccc"  strokeDasharray="5 5"/>
-            <XAxis dataKey="name" />
+            <XAxis dataKey="date" />
             <YAxis />
             <Tooltip wrapperStyle={{ width: 100, backgroundColor: '#ccc' }} />
+            <Legend />
         </LineChart>
+        </ResponsiveContainer>
 )
 
     return (
-        <div>
+        <div className='ProgressView'>
             {renderLineChar}
         </div>
     )
