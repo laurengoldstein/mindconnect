@@ -10,7 +10,6 @@ const data = [{name: '2022-10-03', anxiety: 3, sleep: 6}, {name: '2022-10-04', a
 //do left-foin with tracked_items (in the api routes) so that the name of the indicator is in data 
 //for each unique tracked_items name generate a line
 const {tracked_items} = props.user;
-console.log(tracked_items);
 
 let data1 = [];
 for(let data_point in props.data){
@@ -20,16 +19,12 @@ for(let data_point in props.data){
         }
         )
 }
-console.log(data1)
 
 const renderLineChar = (
     <LineChart width={400} height={400} data={data}>
-            {tracked_items &&
-                tracked_items.map(t =>
-                <Line key={t.id} type="monotone" dataKey='anxiety' stroke="#8884d8" /> )
-            }
-            {/* <Line type="monotone" dataKey="anxiety" stroke="#8884d8" />
-            <Line type="monotone" dataKey="sleep" stroke="#008001" /> */}
+            <Line  type="monotone" dataKey='anxiety' stroke="#8884d8" />
+            <Line  type="monotone" dataKey='sleep' stroke="#8884d8" /> 
+        
             <CartesianGrid stroke="#ccc"  strokeDasharray="5 5"/>
             <XAxis dataKey="name" />
             <YAxis />
