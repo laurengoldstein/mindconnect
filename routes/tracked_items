@@ -1,0 +1,13 @@
+var express = require('express');
+var router = express.Router();
+const db = require("../model/helper.js");
+
+
+/* GET all tracked_items. */
+router.get('/tracked_items', function(req, res, next) {
+    db('SELECT * FROM tracked_items;')
+    .then(result => res.send(result.data))    
+    .catch((err) => res.status(500).send({error: err.message}));
+  });
+
+module.exports = router;
