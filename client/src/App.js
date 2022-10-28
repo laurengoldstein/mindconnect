@@ -40,15 +40,19 @@ useEffect(() => {
 }, []);
 
 
-  return (
-    <div className="App">
 
+
+  return (
+    <div className="App container">
+
+    
      <Navbar/>
+   
 
      <Routes>
         <Route path="user/:id" element={<ProfileView user={user}/>} />
         <Route path="progress" element={<ProgressView user={user} data={data}/>} />
-        <Route path="track" element={<TrackingFormView />} />
+        <Route path="track" element={<TrackingFormView user={user}/>} />
         <Route path="*" element={<Error404View />} />
      </Routes>
     </div>

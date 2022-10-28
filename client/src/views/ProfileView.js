@@ -8,7 +8,10 @@ function ProfileView(props){
     <div>
         <h2>{props.user.firstName} {props.user.lastName}</h2>
         <ul>
-            <li>{props.user.email}</li>
+            <li><b>email: </b>{props.user.email}</li>
+        </ul>
+        <h3>Currently tracking:</h3>
+        <ul>
             {props.user.tracked_items &&
                 props.user.tracked_items.map((ti) => (
                     <li key={ti.id}>

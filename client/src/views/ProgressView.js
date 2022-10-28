@@ -7,7 +7,6 @@ function ProgressView(props) {
 
 const data = props.data;
 
-console.log(props.data)
 let colors = ['red', 'blue', 'purple', 'green', 'yellow', 'teal', 'magenta', 'orange', 'brown', 'black', 'lightblue']
 
 const renderLineChar = (
