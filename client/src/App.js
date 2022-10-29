@@ -41,6 +41,7 @@ useEffect(() => {
 
 
 
+//Set default values for input
 
   return (
     <div className="App container">
@@ -51,8 +52,8 @@ useEffect(() => {
 
      <Routes>
         <Route path="user/:id" element={<ProfileView user={user}/>} />
-        <Route path="progress" element={<ProgressView user={user} data={data}/>} />
-        <Route path="track" element={<TrackingFormView user={user}/>} />
+        <Route path="progress" element={<ProgressView user={user} data={data} indicators={indicators}/>} />
+        <Route path="track" element={<TrackingFormView setData={data => setData(data)} user={user} indicators={indicators}/>} />
         <Route path="*" element={<Error404View />} />
      </Routes>
     </div>

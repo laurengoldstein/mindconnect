@@ -82,17 +82,20 @@ router.get('/data', function(req,res,next) {
 
 /* POST new data */
 router.post("/data", function(req, res, next){
-    let {tracked_items_id, date, value, user_id} = req.body;
-    db(
-      `INSERT INTO data (tracked_items_id, date, value, user_id)
-      VALUES (${tracked_items_id}, '${date}', ${value}, ${user_id});`
-    )
-    .then(() => {
-      db("SELECT * FROM data;").then(result => 
-        res.status(201).send(result.data)
-        );
-    })
-    .catch(err => res.status(500).send({error: err.message}));
+    let {tracked_obj, user_id} = req.body;
+    //Check how many tracked_items_id and reapeat db x counter
+    for(let ti in tracked_obj){
+      db(
+        `INSERT INTO data (tracked_items_id, value, user_id)
+        VALUES (${tracked_obj[ti].tracked_items_id}, ${tracked_obj[ti].value}, ${user_id});`
+      )
+      .then(() => {
+        db("SELECT * FROM data;").then(result => 
+          res.status(201).send(result.data)
+          );
+      })
+      .catch(err => res.status(500).send({error: err.message}));
+  }
   });
 
 module.exports = router;

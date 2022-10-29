@@ -11,14 +11,17 @@ function ProfileView(props){
             <li><b>email: </b>{props.user.email}</li>
         </ul>
         <h3>Currently tracking:</h3>
-        <ul>
+        <ul className="trackingList">
+            
             {props.user.tracked_items &&
                 props.user.tracked_items.map((ti) => (
                     <li key={ti.id}>
-                        {ti.indicator}
+                    <input type="checkbox" disabled readOnly/>
+                    {ti.indicator}
                     </li>
                 ))
             }
+            
         </ul>
     </div>
     )
