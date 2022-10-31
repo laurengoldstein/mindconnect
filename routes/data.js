@@ -82,6 +82,22 @@ router.get('/data', function(req,res,next) {
     })
     .catch(err => res.status(500).send(err));
 });
+
+/* GET data with custom date filter*/
+router.get('/data/custom', function(req,res,next) {
+  let sql = `
+            SELECT data.*, tracked_items.*  
+            FROM data 
+            LEFT JOIN tracked_items ON data.tracked_items_id = tracked_items.id
+            WHERE user_id = ${req.query.user} AND date BETWEEN '${req.query.start}' AND '${req.query.end}' 
+           ORDER BY data.date;
+          `;
+    db(sql)
+    .then(result => {
+      res.send(joinToJson(result));
+    })
+    .catch(err => res.status(500).send(err));
+});
     
 
 /* POST new data */

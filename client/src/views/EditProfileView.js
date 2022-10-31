@@ -76,9 +76,6 @@ function EditProfileView(props){
             console.log(`Server error: ${error.message}`)
           })
         }
-    
-
-
 
     return(
         <div>
@@ -102,11 +99,9 @@ function EditProfileView(props){
                     ))
                 }
             </ul>
-            <button type="submit">Save changes</button>
-            </form>
-            <form onSubmit={e => handleSubmitIndicator(e)}>
-                <label><button type="submit">+</button><input type="text" placeholder="Add new indicator" 
+            <label><button type="button" onClick={e => handleSubmitIndicator(e)}>+</button><input type="text" placeholder="Add new indicator" 
                 defaultValue={newIndicator} onChange={e => handleChangeIndicator(e)}/></label>
+            <button type="submit">Save changes</button>
             </form>
 
         </div>
