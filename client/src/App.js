@@ -10,14 +10,15 @@ import EditProfileView from './views/EditProfileView';
 import TrackingFormView from './views/TrackingFormView';
 import Error404View from './views/Error404View';
 
+let currMonth = new Date().toISOString().slice(0, 7);
+
 
 function App() {
 let [user, setUser] = useState([]);
 let [selectedUser] = useState({id: 1});
 let [data, setData] = useState([]);
 let [indicators, setIndicators] = useState([]);
-
-let month = new Date().toISOString().slice(0, 7);
+let [month, setMonth] =useState(currMonth)
 let navigate=useNavigate();
 
 
@@ -38,13 +39,13 @@ useEffect(() => {
 }, []);
 
 useEffect(() => {
-  fetch(`/data/?user=${selectedUser.id}&month=&${month}`)
+  fetch(`/data/?user=${selectedUser.id}&month=${month}`)
   .then(res => res.json())
   .then(json => {setData(json);})
   .catch(error => {
     console.log(`Server error: ${error.message}`)
   });
-}, [])
+}, [month])
 
 function updateProfile(input) {
   console.log(input)
@@ -80,7 +81,7 @@ function updateProfile(input) {
      <Routes>
         <Route path="user/:id" element={<ProfileView user={user} indicators={indicators} />} />
         <Route path="edit" element={<EditProfileView user={user} indicators={indicators} setIndicators={indicators => setIndicators(indicators)} updateProfile={input => updateProfile(input)}/>} />
-        <Route path="progress" element={<ProgressView user={user} data={data} indicators={indicators}/>} />
+        <Route path="progress" element={<ProgressView user={user} data={data} indicators={indicators} setMonth={selectedMonth => setMonth(selectedMonth)}/>} />
         <Route path="track" element={<TrackingFormView setData={data => setData(data)} user={user} indicators={indicators}/>} />
         <Route path="*" element={<Error404View />} />
      </Routes>

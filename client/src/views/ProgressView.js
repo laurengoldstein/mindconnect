@@ -41,8 +41,11 @@ const renderLineChar = (
 
 function handleChange(event){
  let selectedMonth = event.target.value;
-
+ props.setMonth(selectedMonth);
+ console.log(selectedMonth)
 }
+
+
 
     return (
         <div className='ProgressView'>
