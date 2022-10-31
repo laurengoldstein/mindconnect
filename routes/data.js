@@ -15,6 +15,10 @@ function makeWhereFromFilters(d) {
   if (d.month) {
     filters.push(`date LIKE '${d.month}%'`);
 }
+  //Filter by date
+  if (d.date) {
+    filters.push(`date LIKE '${d.date}%'`);
+  }
   // Return all filters joined by AND
   return filters.join(' AND ');
 }
@@ -91,9 +95,11 @@ router.post("/data", function(req, res, next){
       )
       .catch(err => res.status(500).send({error: err.message}))
     }
-        db("SELECT * FROM data;")
+        db(`SELECT data.*, tracked_items.*  
+        FROM data 
+        LEFT JOIN tracked_items ON data.tracked_items_id = tracked_items.id WHERE user_id = ${user_id};`)
         .then(result => 
-          res.status(201).send(result.data)
+          res.status(201).send(joinToJson(result))
           )
       .catch(err => res.status(500).send({error: err.message}));
   });

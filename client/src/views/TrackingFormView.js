@@ -48,7 +48,7 @@ const addData = () => {
     })
   navigate("/progress")
 }
-    
+    //Add coditional here
     return(
         <div>
             <h2>How are you feeling today?</h2>

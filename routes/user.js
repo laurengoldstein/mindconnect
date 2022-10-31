@@ -138,7 +138,7 @@ try {
 /* PUT - modify existing user */
 router.put("/:id", ensureUserExists, function(req, res){
   let userID = req.params.id;
-  let {firstName, lastName, password, email} = req.body;
+  let {firstName, lastName, password, email, tracked_items_id} = req.body;
   db(`SELECT * FROM user WHERE id = ${userID};`)
   .then((result) => {
     if(!result.data.length){
@@ -146,11 +146,13 @@ router.put("/:id", ensureUserExists, function(req, res){
     } else {
       db(`UPDATE user SET firstName = '${firstName}', lastName = '${lastName}', password = '${password}', email ='${email}' WHERE id = '${userID}';`)
       .then(()=> {
-        db('SELECT * FROM user;')
-        .then((result) => res.send(result.data))
+        db(`SELECT * FROM user WHERE id = ${userID};`)
+        .then((result) => res.send(result.data[0]))
       })
     .catch(err => res.status(500).send({error: err.message}))
   }})
+//Delete traacked_items_user for user_id = id
+//For loop for each tracked item - insert into tracked items user
 });
 
 
