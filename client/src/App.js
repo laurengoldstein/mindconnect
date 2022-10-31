@@ -50,7 +50,7 @@ useEffect(() => {
   .catch(error => {
     console.log(`Server error: ${error.message}`)
   });
-}, [])
+}, [month])
 
 useEffect(() => {
   fetch(`/data/?user=1&date=${currDay}`)
@@ -97,7 +97,7 @@ function updateProfile(input) {
         <Route path="user/:id" element={<ProfileView user={user} indicators={indicators} />} />
         <Route path="edit" element={<EditProfileView user={user} indicators={indicators} setIndicators={indicators => setIndicators(indicators)} updateProfile={input => updateProfile(input)}/>} />
         <Route path="progress" element={<ProgressView user={user} data={data} indicators={indicators} setMonth={selectedMonth => setMonth(selectedMonth)}/>} />
-        <Route path="track" element={<TrackingFormView setData={data => setData(data)} user={user} indicators={indicators}/>} />
+        <Route path="track" element={<TrackingFormView setData={data => setData(data)} user={user} indicators={indicators} todaysData={todaysData}/>} />
         <Route path="*" element={<Error404View />} />
      </Routes>
     </div>

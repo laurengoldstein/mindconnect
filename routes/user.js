@@ -136,24 +136,25 @@ try {
 });
 
 /* PUT - modify existing user */
-router.put("/:id", ensureUserExists, function(req, res){
-  let userID = req.params.id;
+router.put("/:id", ensureUserExists, async function(req, res){
+  let userID = Number(req.params.id);
   let {firstName, lastName, password, email, tracked_items_id} = req.body;
-  db(`SELECT * FROM user WHERE id = ${userID};`)
-  .then((result) => {
-    if(!result.data.length){
-      result.status(404).send({error: 'User not found'});
-    } else {
-      db(`UPDATE user SET firstName = '${firstName}', lastName = '${lastName}', password = '${password}', email ='${email}' WHERE id = '${userID}';`)
-      .then(()=> {
-        db(`SELECT * FROM user WHERE id = ${userID};`)
-        .then((result) => res.send(result.data[0]))
-      })
-    .catch(err => res.status(500).send({error: err.message}))
-  }})
-//Delete traacked_items_user for user_id = id
-//For loop for each tracked item - insert into tracked items user
-});
-
+  try{
+    await db(`UPDATE user SET firstName = '${firstName}', lastName = '${lastName}', password = '${password}', email ='${email}' WHERE id = ${userID};`)
+    await db(`DELETE FROM tracked_items_user WHERE user_id = ${userID};`)
+    for (let ti of tracked_items_id){
+     await db(`INSERT INTO tracked_items_user (user_id, tracked_items_id) VALUES (${userID}, ${Number(ti)})`)
+    }
+    let result = await db(`SELECT u.*, t.*, u.id AS user_id, t.id AS tracked_items_id
+    FROM user AS u
+    LEFT JOIN tracked_items_user AS tu ON u.id = tu.user_id
+    LEFT JOIN tracked_items AS t ON tu.tracked_items_id = t.id
+    WHERE u.id = ${userID};`)
+    let result2 = joinToJson(result)
+    res.status(201).send(result2)
+  } catch (err) {
+    res.status(500).send({error: err.message});
+  }
+})
 
 module.exports = router;

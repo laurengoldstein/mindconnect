@@ -86,7 +86,7 @@ router.get('/data', function(req,res,next) {
 
 /* POST new data */
 router.post("/data", function(req, res, next){
-    let {tracked_obj, user_id} = req.body;
+    let {tracked_obj, user_id, month} = req.body;
     //Check how many tracked_items_id and reapeat db x counter
     for(let ti in tracked_obj){
       db(
@@ -97,7 +97,7 @@ router.post("/data", function(req, res, next){
     }
         db(`SELECT data.*, tracked_items.*  
         FROM data 
-        LEFT JOIN tracked_items ON data.tracked_items_id = tracked_items.id WHERE user_id = ${user_id};`)
+        LEFT JOIN tracked_items ON data.tracked_items_id = tracked_items.id WHERE user_id = ${user_id} AND date LIKE '${month}%';`)
         .then(result => 
           res.status(201).send(joinToJson(result))
           )

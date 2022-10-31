@@ -31,12 +31,13 @@ const addData = () => {
     tracked.push(obj)
   }
   //Post new data
+  let currMonth = new Date().toISOString().slice(0, 7);
   fetch("/data", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({tracked_obj: tracked, user_id: props.user.id})
+    body: JSON.stringify({tracked_obj: tracked, user_id: props.user.id, month: currMonth})
   })
   .then((res) => {
       res.json()
@@ -49,6 +50,7 @@ const addData = () => {
   navigate("/progress")
 }
     //Add coditional here
+    if(props.todaysData.length === 0){
     return(
         <div>
             <h2>How are you feeling today?</h2>
@@ -65,6 +67,13 @@ const addData = () => {
             </form>
         </div>
     )
+  } else {
+    return(
+      <div>
+        <h2>You are all set for today!</h2>
+      </div>
+    )
+  }
 }
 
 export default TrackingFormView;

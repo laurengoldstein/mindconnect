@@ -38,9 +38,9 @@ CREATE TABLE `data`(
 ALTER TABLE
     `data` ADD CONSTRAINT `data_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `user`(`id`);
 ALTER TABLE
-    `tracked_items_user` ADD CONSTRAINT `tracked_items_user_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `user`(`id`);
+    `tracked_items_user` ADD CONSTRAINT `tracked_items_user_user_id_foreign` FOREIGN KEY(`user_id`) REFERENCES `user`(`id`) ON DELETE CASCADE;
 ALTER TABLE
-    `tracked_items_user` ADD CONSTRAINT `tracked_items_user_tracked_items_id_foreign` FOREIGN KEY(`tracked_items_id`) REFERENCES `tracked_items`(`id`);
+    `tracked_items_user` ADD CONSTRAINT `tracked_items_user_tracked_items_id_foreign` FOREIGN KEY(`tracked_items_id`) REFERENCES `tracked_items`(`id`) ON DELETE CASCADE;
 ALTER TABLE
     `data` ADD CONSTRAINT `data_tracked_items_id_foreign` FOREIGN KEY(`tracked_items_id`) REFERENCES `tracked_items`(`id`);
 
