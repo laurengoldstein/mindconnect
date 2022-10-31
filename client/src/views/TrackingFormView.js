@@ -1,29 +1,23 @@
 import React, { useState } from 'react';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 
 let defaultValues = {}
 
 function TrackingFormView(props) {
 let [values, setValue] = useState({});
-
-
+let navigate = useNavigate();
 
 function handleChange(event){
     let {name, value} = event.target;
     setValue(defaultValues => ({...defaultValues, [name]: value}) )
 }
 
-
 function handleSubmit(event){
     event.preventDefault();
     //Put "values" into an array, add the id 
-    console.log();
-
     addData();
     setValue(defaultValues);
 }
-
-
-
 
 const addData = () => {
   //Transform data into desired format for post
@@ -36,7 +30,7 @@ const addData = () => {
     }
     tracked.push(obj)
   }
-
+  //Post new data
   fetch("/data", {
     method: "POST",
     headers: {
@@ -52,9 +46,8 @@ const addData = () => {
     .catch(error => {
       console.log(`Server error: ${error.message}`)
     })
-    console.log('posted')
+  navigate("/progress")
 }
-   
     
     return(
         <div>
@@ -64,7 +57,7 @@ const addData = () => {
                     props.user.tracked_items &&
                     props.user.tracked_items.map((ti) => (
                         <label key={ti.indicator} htmlFor="slider1" className="form-label">{ti.indicator}
-                        <span>0</span><input key={ti} name={ti.indicator} defaultValue="5" type="range" className="slider" id="slider1" min="0" max="10" onChange={handleChange}/><span>10</span><span></span>
+                        <span>0</span><input key={ti} name={ti.indicator} defaultValue="5" type="range" className="slider" id="slider1" min="0" max="10" onChange={handleChange}/><span>10</span><span>{values[ti.indicator] || 0}</span>
                         </label>
                     ))
                 }

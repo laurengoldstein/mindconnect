@@ -14,7 +14,9 @@ props.user.tracked_items && props.user.tracked_items.forEach(e => tracking.push(
 
     return( 
     <div>
-        <button type="button" id="edit">Edit profile</button>
+        <Link to= "/edit">
+            <button type="button" id="edit">Edit profile</button>
+        </Link>
         <h2>{props.user.firstName} {props.user.lastName}</h2> 
         <ul>
             <li><b>email: </b>{props.user.email}</li>

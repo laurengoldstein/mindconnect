@@ -5,6 +5,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 
 function ProgressView(props) {
 
+let month = new Date().toISOString().slice(0, 7);
+
 const data = props.data;
 
 let colors = ['red', 'blue', 'purple', 'green', 'yellow', 'teal', 'magenta', 'orange', 'brown', 'black', 'lightblue']
@@ -36,8 +38,17 @@ const renderLineChar = (
         </ResponsiveContainer>
 )
 
+
+function handleChange(event){
+ let selectedMonth = event.target.value;
+
+}
+
     return (
         <div className='ProgressView'>
+            <form>
+                <input id="selected-month" name="selected-month" type="month" defaultValue={month} onChange={handleChange}/>
+            </form>
             {renderLineChar}
         </div>
     )

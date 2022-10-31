@@ -17,18 +17,15 @@ let [selectedUser] = useState({id: 1});
 let [data, setData] = useState([]);
 let [indicators, setIndicators] = useState([]);
 
+let month = new Date().toISOString().slice(0, 7);
+let navigate=useNavigate();
+
 
 
 useEffect(() => {
   fetch(`/user/${selectedUser.id}`)
     .then(res => res.json())
     .then(json => {setUser(json);})
-    .catch(error => {
-      console.log(`Server error: ${error.message}`)
-    });
-    fetch(`/data/?user=${selectedUser.id}`)
-    .then(res => res.json())
-    .then(json => {setData(json);})
     .catch(error => {
       console.log(`Server error: ${error.message}`)
     });
@@ -39,6 +36,15 @@ useEffect(() => {
       console.log(`Server error: ${error.message}`)
     });
 }, []);
+
+useEffect(() => {
+  fetch(`/data/?user=${selectedUser.id}&month=&${month}`)
+  .then(res => res.json())
+  .then(json => {setData(json);})
+  .catch(error => {
+    console.log(`Server error: ${error.message}`)
+  });
+}, [])
 
 function updateProfile(input) {
   console.log(input)
@@ -57,7 +63,7 @@ function updateProfile(input) {
   .catch(error => {
     console.log(`Server error: ${error.message}`)
   })
-  window.location.reload(false)
+  navigate("user/:id");
 }
 
 
@@ -73,7 +79,7 @@ function updateProfile(input) {
 
      <Routes>
         <Route path="user/:id" element={<ProfileView user={user} indicators={indicators} />} />
-        <Route path="user/:id/edit" element={<EditProfileView user={user} indicators={indicators} updateProfile={input => updateProfile(input)}/>} />
+        <Route path="edit" element={<EditProfileView user={user} indicators={indicators} setIndicators={indicators => setIndicators(indicators)} updateProfile={input => updateProfile(input)}/>} />
         <Route path="progress" element={<ProgressView user={user} data={data} indicators={indicators}/>} />
         <Route path="track" element={<TrackingFormView setData={data => setData(data)} user={user} indicators={indicators}/>} />
         <Route path="*" element={<Error404View />} />

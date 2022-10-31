@@ -1,27 +1,30 @@
-import React,{useState} from 'react';
-import { Link, useInRouterContext, useParams } from 'react-router-dom';
+import React,{ useState} from 'react';
 import Error404View from './Error404View';
 
  
 function EditProfileView(props){
    let [input, setInput] = useState({});
+   let [newIndicator, setNewIndicator] = useState("");
+
     let tracking = [];
     props.user.tracked_items && props.user.tracked_items.forEach(e => tracking.push(e.indicator))
+
 
     function handleChange(event){
         let{name, value} = event.target;
         setInput(input => ({...input, [name]: value}))
+        console.log(props.user.tracked_items.find(t => t.indicator === "sleep quality"))
     }
 
     function handleSubmit(event){
         event.preventDefault();
         //Insert previous data for input fields that were left empty
         let modifiedProfile={...input};
-        if(!modifiedProfile.tracked_items){
-            modifiedProfile.tracked_items = [];
-            for(let i in props.user.tracked_items){
-                modifiedProfile.tracked_items.push(props.user.tracked_items[i])
-            }
+        modifiedProfile.tracked_items_id = [];
+        console.log(modifiedProfile)
+        for(let e in tracking){
+           let tracked_obj = props.user.tracked_items.find(t => t.indicator === tracking[e])
+           modifiedProfile.tracked_items_id.push(tracked_obj.id)
         }
         for(let key in props.user){
             if(!Object.keys(modifiedProfile).includes(key)){
@@ -31,6 +34,51 @@ function EditProfileView(props){
         delete modifiedProfile.id
         props.updateProfile(modifiedProfile)
     }
+
+    function changeIndicators(event){
+       let isChecked = event.target.checked;
+       if(isChecked && !tracking.includes(event.target.name)){
+        tracking.push(event.target.name)
+       } else if (!isChecked){
+        tracking = tracking.filter(e => e !== event.target.name)
+       }
+       return tracking;
+        }
+
+
+    function handleChangeIndicator(event){
+        setNewIndicator(event.target.value);
+    }
+
+    function handleSubmitIndicator(event){
+        event.preventDefault();
+        addIndicator();
+        setNewIndicator("");
+    }
+
+    function addIndicator(){
+        console.log(newIndicator)
+        fetch("/tracked_items", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({indicator: newIndicator})
+          })
+          // Continue fetch request here
+          .then((res) => {
+            res.json()
+            .then((json)=> {
+            console.log(json)
+              props.setIndicators(json)
+            })})
+          .catch(error => {
+            console.log(`Server error: ${error.message}`)
+          })
+        }
+    
+
+
 
     return(
         <div>
@@ -47,18 +95,18 @@ function EditProfileView(props){
                 {props.indicators &&
                     props.indicators.map((ti) => (
                         <li key={ti.id}>
-                        <input type="checkbox" defaultChecked={tracking.includes(ti.indicator) ? true : false} onChange={handleChange}/>
+                        <input type="checkbox" name={ti.indicator} id={ti.indicator} defaultChecked={tracking.includes(ti.indicator) ? true : false} 
+                        onChange={e=> changeIndicators(e)}/>
                         {ti.indicator}
                         </li>
                     ))
                 }
             </ul>
-            <div>
-                <form>
-                <label><input type="text" placeholder="Add new indicator"/></label>
-                </form>
-            </div>
             <button type="submit">Save changes</button>
+            </form>
+            <form onSubmit={e => handleSubmitIndicator(e)}>
+                <label><button type="submit">+</button><input type="text" placeholder="Add new indicator" 
+                defaultValue={newIndicator} onChange={e => handleChangeIndicator(e)}/></label>
             </form>
 
         </div>

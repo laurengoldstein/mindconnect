@@ -89,13 +89,13 @@ router.post("/data", function(req, res, next){
         `INSERT INTO data (tracked_items_id, value, user_id)
         VALUES (${tracked_obj[ti].tracked_items_id}, ${tracked_obj[ti].value}, ${user_id});`
       )
-      .then(() => {
-        db("SELECT * FROM data;").then(result => 
+      .catch(err => res.status(500).send({error: err.message}))
+    }
+        db("SELECT * FROM data;")
+        .then(result => 
           res.status(201).send(result.data)
-          );
-      })
+          )
       .catch(err => res.status(500).send({error: err.message}));
-  }
   });
 
 module.exports = router;
