@@ -7,7 +7,7 @@ To start the application, run `npm start` in the project folder. Then open anoth
 
 
 ## Database Schema
-![alt text](./Database_Schema.png_ "Database schema")
+![alt text](./Database_Schema.png "Database schema")
 
 
 ## User flow diagram
