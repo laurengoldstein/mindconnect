@@ -1,8 +1,50 @@
-.ProgressView{
-    width: 1000px;
-    height: 1000px;
+.btn{
+    color: #03045D;
+    text-transform: none;
+    font-size: 20px;
+    background-color: #0096C6;
+    border: none;
+    width: 35%;
+    font-family: "Roboto, sans-serif";
+}
+
+.btn:hover{
+    background-color: #40B7D4;
+}
+.active{
+ background-color: #0096C6 !important;
+ color: #C9F0F7 !important;
+ text-decoration: none;
+ font-weight: bolder;
 }
 
 .trackingList{
     list-style: none;
+}
+
+.Logo{
+display: block;
+ width: 50%;
+ height: 50%;
+ margin-left: auto;
+ margin-right: auto;
+}
+
+button{
+    color: white;
+    text-transform:uppercase;
+    background-color: #0077B6;
+    border: none;
+    border-radius: 6px;
+    width: 35%;
+    font-family: "Roboto, sans-serif";
+    font-weight: 200;
+}
+
+button:hover{
+    background-color: #40B7D4;
+}
+
+.container{
+    max-width:60%;
 }

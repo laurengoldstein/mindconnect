@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DateTime } from "luxon";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-
+import "./ProgressView.css"
 
 function ProgressView(props) {
 
@@ -14,15 +14,15 @@ const data = props.data;
 let colors = ['red', 'blue', 'purple', 'green', 'yellow', 'teal', 'magenta', 'orange', 'brown', 'black', 'lightblue']
 
 const renderLineChar = (
-        <ResponsiveContainer width="50%" height="50%">
+        <ResponsiveContainer width="100%" height="90%">
                 <LineChart
-                width={500}
-                height={300}
+                width="90%"
+                height="90%"
                 data={data}
                 margin={{
                 top: 5,
-                right: 30,
-                left: 20,
+                right: 15,
+                left: 0,
                 bottom: 5,
                 }}
                 >
@@ -45,7 +45,6 @@ function handleChange(event){
 if(event.target.name === "selected-month"){
  let selectedMonth = event.target.value;
  props.setMonth(selectedMonth);
- console.log(selectedMonth)
 } else if (event.target.name === "start-date"){
     props.setStart(event.target.value)
 } else if (event.target.name === "end-date"){
@@ -74,25 +73,26 @@ function handleSubmit(event){
 
 
     return (
-        <div className='ProgressView'>
-            <button type="button" name="monthButton" onClick={handleClick}>Month</button>
-            <button type="button" name="customButton" onClick={handleClick}>Custom time frame</button>
-            {selectedView === "month" ? 
+        <div className="d-flex flex-column mx-5 mb-4" id="flexCont">
+            <div class="btn-group" role="group">
+                <button type="button" name="monthButton" className={"btn my-3" + (selectedView === "month" ?  " active": "")} onClick={handleClick}>Month</button>
+                <button type="button" name="customButton" className={"btn my-3"+ (selectedView !== "month" ?  " active": "")} onClick={handleClick}>Custom time frame</button>
+                </div>
+                
+                {selectedView === "month" ? 
             <form>
-                <input id="selected-month" name="selected-month" type="month" defaultValue={month} onChange={handleChange}/>
+                <input className="mb-3" id="selected-month" name="selected-month" type="month" defaultValue={month} onChange={handleChange}/>
             </form> : 
-             <form onSubmit={handleSubmit}>
-                <label>From:
+             <form onSubmit={handleSubmit} className="d-flex flex-row justify-content-center mb-3">
+                <label className="blue">From:
                 <input id="start-date" name="start-date" type="date" defaultValue={month} onChange={handleChange}/>
                 </label>
-                <label>To:
-                <input id="end-date" name="end-date" type="date" defaultValue={month} onChange={handleChange}/>
+                <label className="blue ms-2">To:
+                <input id="end-date" className="" name="end-date" type="date" defaultValue={month} onChange={handleChange}/>
                 </label>
-                <button type="submit">Select</button>
-            </form>
-    }
-            {renderLineChar}
-
+                <button className="ms-2" id="submit-button" type="submit">Select</button>
+            </form> } 
+             {renderLineChar}
         </div>
     )
 }

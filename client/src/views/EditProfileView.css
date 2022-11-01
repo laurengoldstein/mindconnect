@@ -1,0 +1,11 @@
+#add-button{
+    height: fit-content;
+    width: fit-content;
+    text-align: middle;
+    padding: 6px 12px;
+} 
+
+.submit-button{
+    width: fit-content;
+    padding: 5px 10px;
+}

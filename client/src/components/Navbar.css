@@ -1,22 +1,11 @@
-nav {
-    border: 1px solid #ccc;
+.navbar-nav{
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+}
+.navbar-brand{
+    color: #03045E;
 }
 
-nav ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-nav li {
-    display: inline-block;
-    margin: 0 5px;
-}
-
-nav a {
-    padding: 10px;
-}
-
-/* 'active' class automatically added by React Router */
-nav a.active {
-    background-color: #ccc;
+#white-logo{
+    width: 90px;
 }

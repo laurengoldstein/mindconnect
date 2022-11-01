@@ -78,62 +78,6 @@ router.get("/:id", ensureUserExists, function(req, res){
   .catch(err => res.status(500).send({error: err.message}));
 });
 
-/* POST new user */
-// router.post("/", function(req, res){
-//   let {firstName, lastName, password, email, tracked_items_id} = req.body;
-  
-//   let sql=`INSERT INTO user (firstName, lastName, password, email)
-//     VALUES ('${firstName}', '${lastName}', '${password}', '${email}');
-//     SELECT LAST_INSERT_ID();`
-  
-//   db(sql)
-//   .then((result) => {
-//     let userId = result.data[0].insertId;
-//     if (tracked_items_id && tracked_items_id.length){
-//       let vals = [];
-//       for(let ti_ID of tracked_items_id){
-//         vals.push(`(${userId}, ${ti_ID}`);
-//       }
-//       let sql = `
-//                 INSERT INTO tracked_items_user (user_id, tracked_items_id)
-//                 VALUES ${vals.join(',')}`;
-//             console.log(sql)
-//             db(sql)
-//             .then(() =>  { 
-//               res.status(201);
-//               sendAllUsers(res);})
-//             .catch(err => res.status(500).send({error: err.message}));
-//     }  
-// })
-//   .catch(err => res.status(500).send({error: err.message}));
-// });
-
-router.post("/", async function(req, res){
- let {firstName, lastName, password, email, tracked_items_id} = req.body;
- 
- let sql=`INSERT INTO user (firstName, lastName, password, email)
-      VALUES ('${firstName}', '${lastName}', '${password}', '${email}');
-      SELECT LAST_INSERT_ID();`
-
-try {
-  let results = await db(sql);
-  let userId = results.data[0].insertId;
-    if (tracked_items_id && tracked_items_id.length){
-      let vals = [];
-      for(let ti_ID of tracked_items_id){
-        vals.push(`(${userId}, ${ti_ID}`);
-      }
-      let sql = `
-          INSERT INTO tracked_items_user (user_id, tracked_items_id)
-          VALUES ${vals.join(',')}`;
-      await db(sql);
-    }
-    res.status(201);
-    sendAllUsers(res);
-  } catch (err) {
-    res.status(500).send({ error: err.message });  
-}
-});
 
 /* PUT - modify existing user */
 router.put("/:id", ensureUserExists, async function(req, res){

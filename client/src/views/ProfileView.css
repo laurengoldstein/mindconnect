@@ -1,0 +1,18 @@
+.blue{
+    color: #0095C6;
+    font-weight: 700;
+}
+
+li{
+    list-style: none;
+}
+
+#edit{
+    font-size: 15px;
+    height: fit-content;
+    width: 200px;
+}
+
+#edit-icon{
+    width: 12%;
+}

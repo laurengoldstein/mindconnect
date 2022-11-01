@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
+import "./TrackingFormView.css"
 
 let defaultValues = {}
 
@@ -52,25 +53,36 @@ const addData = () => {
     //Add coditional here
     if(props.todaysData.length === 0){
     return(
-        <div>
-            <h2>How are you feeling today?</h2>
-            <form onSubmit={handleSubmit}>
+      <div className="mx-5 py-5"> 
+            <h3 className="blue mb-1" id="title">Hello, {props.user.firstName}!</h3>
+            <h2 className="blue mb-4" id="title">How are you feeling today?</h2>
+            <form onSubmit={handleSubmit} className="d-flex flex-column">
                 {
                     props.user.tracked_items &&
                     props.user.tracked_items.map((ti) => (
-                        <label key={ti.indicator} htmlFor="slider1" className="form-label">{ti.indicator}
-                        <span>0</span><input key={ti} name={ti.indicator} defaultValue="5" type="range" className="slider" id="slider1" min="0" max="10" onChange={handleChange}/><span>10</span><span>{values[ti.indicator] || 0}</span>
+                        
+                        <label key={ti.indicator} htmlFor="slider1" className="form-label">
+                        <div>
+                        {ti.indicator}
+                        </div>
+                        <span className="me-1">0</span><input key={ti} name={ti.indicator} defaultValue="5" type="range" className="slider" id="slider1" min="0" max="10" onChange={handleChange}/><span className="ms-1">10</span><span className="inter-label">{values[ti.indicator] || "select value"}</span>
                         </label>
+                        
                     ))
                 }
-                <button type="submit">Done!</button>
+                <div>
+                  <button id="done-button" className="button" type="submit">Done!</button>
+                </div>
             </form>
         </div>
     )
   } else {
     return(
-      <div>
-        <h2>You are all set for today!</h2>
+      <div className="text-center mb-5">
+        <h2 className="blue my-5">You are all set for today!</h2>
+        <Link to="/progress">
+          <button type="button">See your progress</button>
+        </Link>
       </div>
     )
   }

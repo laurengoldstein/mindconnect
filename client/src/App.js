@@ -44,7 +44,7 @@ useEffect(() => {
     .catch(error => {
       console.log(`Server error: ${error.message}`)
     });
-}, []);
+}, [indicators]);
 
 useEffect(() => {
   fetch(`/data/?user=1&month=${month}`)
@@ -98,11 +98,13 @@ function updateProfile(input) {
 
   return (
     <div className="App container">
-
     
+      <img className = "Logo" src="Logo.png" alt="Mind Connect Logo" />
+
+      
      <Navbar/>
    
-
+    <div className=".container-sd d-flex justify-content-center bg-light align-middle mb-3">
      <Routes>
         <Route path="/" element={<HomeView />} />
         <Route path="user/:id" element={<ProfileView user={user} indicators={indicators} />} />
@@ -111,7 +113,12 @@ function updateProfile(input) {
         <Route path="track" element={<TrackingFormView setData={data => setData(data)} user={user} indicators={indicators} todaysData={todaysData}/>} />
         <Route path="*" element={<Error404View />} />
      </Routes>
-    </div>
+     </div>
+
+     <footer>
+       <p></p>
+     </footer>
+     </div> 
   );
 }
 
