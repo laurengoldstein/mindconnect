@@ -11,7 +11,7 @@ let month = new Date().toISOString().slice(0, 7);
 
 const data = props.data;
 
-let colors = ['red', 'blue', 'purple', 'green', 'yellow', 'teal', 'magenta', 'orange', 'brown', 'black', 'lightblue']
+let colors = ['red', 'blue', 'purple', 'darkgreen', 'teal', 'magenta', 'orange', 'brown', 'black', 'lightblue']
 
 const renderLineChar = (
         <ResponsiveContainer width="100%" height="90%">
@@ -48,7 +48,6 @@ if(event.target.name === "selected-month"){
 } else if (event.target.name === "start-date"){
     props.setStart(event.target.value)
 } else if (event.target.name === "end-date"){
-    console.log(event.target.value)
     let endDate = DateTime.fromISO(event.target.value);
     endDate = endDate.plus({days: 1}).toSQLDate();
     props.setEnd(endDate)
@@ -65,16 +64,12 @@ function handleClick(event){
     }
 }
 
-function handleSubmit(event){
-    event.preventDefault();
-    props.getDataByCustom();
-}
 
 
 
     return (
         <div className="d-flex flex-column mx-5 mb-4" id="flexCont">
-            <div class="btn-group" role="group">
+            <div className="btn-group" role="group">
                 <button type="button" name="monthButton" className={"btn my-3" + (selectedView === "month" ?  " active": "")} onClick={handleClick}>Month</button>
                 <button type="button" name="customButton" className={"btn my-3"+ (selectedView !== "month" ?  " active": "")} onClick={handleClick}>Custom time frame</button>
                 </div>
@@ -83,16 +78,15 @@ function handleSubmit(event){
             <form>
                 <input className="mb-3" id="selected-month" name="selected-month" type="month" defaultValue={month} onChange={handleChange}/>
             </form> : 
-             <form onSubmit={handleSubmit} className="d-flex flex-row justify-content-center mb-3">
+             <form className="d-flex flex-row justify-content-center mb-3">
                 <label className="blue">From:
                 <input id="start-date" name="start-date" type="date" defaultValue={month} onChange={handleChange}/>
                 </label>
                 <label className="blue ms-2">To:
                 <input id="end-date" className="" name="end-date" type="date" defaultValue={month} onChange={handleChange}/>
                 </label>
-                <button className="ms-2" id="submit-button" type="submit">Select</button>
             </form> } 
-             {renderLineChar}
+             {props.data && renderLineChar}
         </div>
     )
 }

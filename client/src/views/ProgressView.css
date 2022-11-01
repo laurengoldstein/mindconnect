@@ -8,11 +8,4 @@
     height: 500px;
 }
 
-#submit-button{
-    height: fit-content;
-    font-size: 18px;
-    width: max-content;
-    padding: 0 20px; 
-    align-self: flex-end;
-}
 

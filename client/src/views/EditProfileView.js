@@ -21,11 +21,10 @@ function EditProfileView(props){
         //Insert previous data for input fields that were left empty
         let modifiedProfile={...input};
         modifiedProfile.tracked_items_id = [];
-        for(let e in tracking){
-           let tracked_obj = props.user.tracked_items.find(t => t.indicator === tracking[e])
-           console.log(tracked_obj)
-           modifiedProfile.tracked_items_id.push(tracked_obj.id)
-        }
+       for(let e in tracking){
+          let tracked_obj = props.indicators.find(t => t.indicator === tracking[e])
+          modifiedProfile.tracked_items_id.push(tracked_obj.id)
+       }
         for(let key in props.user){
             if(!Object.keys(modifiedProfile).includes(key)){
                 modifiedProfile[`${key}`] = `${props.user[key]}`
@@ -41,15 +40,6 @@ function EditProfileView(props){
         tracking.push(event.target.name)
        } else if (!isChecked){
         tracking = tracking.filter(e => e !== event.target.name)
-       }
-       console.log(tracking)
-       let modifiedProfile={...input};
-       modifiedProfile.tracked_items_id = [];
-       for(let e in tracking){
-          let tracked_obj = props.user.tracked_items.find(t => t.indicator === tracking[e])
-          console.log(tracked_obj)
-          modifiedProfile.tracked_items_id.push(tracked_obj.id)
-          console.log(modifiedProfile.tracked_items_id)
        }
        return tracking;
         }
@@ -71,7 +61,7 @@ function EditProfileView(props){
             headers: {
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({indicator: newIndicator})
+            body: JSON.stringify({indicator: newIndicator, user_id: props.user.id})
           })
           // Continue fetch request here
           .then((res) => {
