@@ -73,7 +73,7 @@ function EditProfileView(props){
             console.log(`Server error: ${error.message}`)
           })
         }
-
+ 
     return(
         <div className="d-flex flex-column mx-5 py-5">
             <h2 className="blue">Edit profile:</h2> 

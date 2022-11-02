@@ -12,6 +12,8 @@ To install packages, run `npm install` in the project folder. Then, cd to the cl
 
 To start the application, run `npm start` in the project folder. Then open another terminal window and run `npm start` again in the client folder.
 
+## API routes
+You can access a table describing all API routes [here](https://docs.google.com/document/d/1O1U_3h51VFvR2mhPNw2iAyywcwley3MX2vSJr88UJQ0/edit?usp=sharing)
 
 ## Database Schema
 ![alt text](./Database_Schema.png "Database schema")
@@ -19,5 +21,15 @@ To start the application, run `npm start` in the project folder. Then open anoth
 
 ## User flow diagram
 ![alt text](./User_Flow.png "User ")
+
+
+## Future features:
+- Disable submit buttons if forms incomplete
+- Log-in and sign-up 
+- Different access for mental-health professionals
+- Comments in progress view
+- Notifications
+- Include changes of medication in plot
+
 
 _This is a student project that was created at [CodeOp](http://codeop.tech), a full stack development bootcamp in Barcelona._
