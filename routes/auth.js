@@ -30,12 +30,10 @@ router.post("/register", async (req, res) => {
  **/
 
 router.post("/login", async (req, res) => {
-  let { username, password } = req.body;
+  let { email, password } = req.body;
 
   try {
-    let results = await db(
-      `SELECT * FROM users WHERE username = '${username}'`
-    );
+    let results = await db(`SELECT * FROM user WHERE email = '${email}'`);
     if (results.data.length === 0) {
       // Username not found
       res.status(401).send({ error: "Login failed" });
