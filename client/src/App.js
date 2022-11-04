@@ -23,15 +23,16 @@ let currDay = new Date().toISOString().slice(0, 10);
 function App() {
   let [data, setData] = useState([]);
   let [indicators, setIndicators] = useState([]);
-  // let [month, setMonth] = useState(currMonth);
-  // let [start, setStart] = useState("");
-  // let [end, setEnd] = useState("");
+  let [month, setMonth] = useState(currMonth);
+  let [start, setStart] = useState("");
+  let [end, setEnd] = useState("");
   const [user, setUser] = useState(Local.getUser());
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
 
-  let [todaysData, setTodaysData] = useState([]);
+  // let [todaysData, setTodaysData] = useState([]);
   let navigate = useNavigate();
 
+  //Gets desired user info & tracked_items -- TRACKING FORM VIEW
   // useEffect(() => {
   //   fetch(`/user/1`)
   //     .then((res) => res.json())
@@ -51,8 +52,9 @@ function App() {
   //     });
   // }, []);
 
+  //Gets user's data for a specified month -- PROGRESS VIEW
   // useEffect(() => {
-  //   fetch(`/data/?user=1&month=${month}`)
+  //   fetch(`/data/?user=${user.id}&month=${month}`)
   //     .then((res) => res.json())
   //     .then((json) => {
   //       setData(json);
@@ -62,8 +64,9 @@ function App() {
   //     });
   // }, [month]);
 
+  // Gets user's data for specified day -- PROGRESS VIEW, but accesses todaysData from TrackingFormView
   // useEffect(() => {
-  //   fetch(`/data/?user=1&date=${currDay}`)
+  //   fetch(`/data/?user=${user.id}&date=${currDay}`)
   //     .then((res) => res.json())
   //     .then((json) => {
   //       setTodaysData(json);
@@ -73,19 +76,20 @@ function App() {
   //     });
   // }, [data]);
 
-  // useEffect(() => {
-  //   if (start.length !== 0 && end.length !== 0)
-  //     fetch(
-  //       `http://localhost:5000/data/custom?user=1&start=${start}&end=${end}`
-  //     )
-  //       .then((res) => res.json())
-  //       .then((json) => {
-  //         setData(json);
-  //       })
-  //       .catch((error) => {
-  //         console.log(`Server error: ${error.message}`);
-  //       });
-  // }, [start, end]);
+  // Gets user's data for custom time range -- PROGRESS VIEW
+  useEffect(() => {
+    if (start.length !== 0 && end.length !== 0)
+      fetch(
+        `http://localhost:5000/data/custom?user=${user.id}&start=${start}&end=${end}`
+      )
+        .then((res) => res.json())
+        .then((json) => {
+          setData(json);
+        })
+        .catch((error) => {
+          console.log(`Server error: ${error.message}`);
+        });
+  }, [start, end]);
 
   async function login(email, password) {
     let myresponse = await Api.loginUser(email, password);
@@ -106,6 +110,7 @@ function App() {
     // (NavBar will send user to home page)
   }
 
+  // updates user's profile info -- EDIT PROFILE VIEW
   function updateProfile(input) {
     console.log(input);
     fetch(`/user/${user.id}`, {
@@ -123,7 +128,7 @@ function App() {
       .catch((error) => {
         console.log(`Server error: ${error.message}`);
       });
-    navigate("user/:id");
+    navigate(`/user/${user.id}`);
   }
 
   return (
@@ -178,7 +183,7 @@ function App() {
                 setData={(data) => setData(data)}
                 user={user}
                 indicators={indicators}
-                todaysData={todaysData}
+                // todaysData={todaysData}
               />
             }
           />

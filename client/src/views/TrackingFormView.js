@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
+import Local from "../helpers/Local";
+import Api from "../helpers/Api";
 import "./TrackingFormView.css";
 
 let defaultValues = {};
 
 function TrackingFormView(props) {
   let [values, setValue] = useState({});
+  let [todaysData, setTodaysData] = useState([]);
+  let [userTrackedItems, setUserTrackedItems] = useState([]);
+  let [errorMsg, setErrorMsg] = useState("");
   let navigate = useNavigate();
 
   function handleChange(event) {
@@ -20,13 +25,30 @@ function TrackingFormView(props) {
     setValue(defaultValues);
   }
 
+  useEffect(() => {
+    fetchUserTrackedItems();
+  }, []);
+
+  async function fetchUserTrackedItems() {
+    // Get "Members Only" message for authenticated users
+    let myresponse = await Api.getUser(`/${props.user.id}`);
+    if (myresponse.ok) {
+      setUserTrackedItems(myresponse.data.tracked_items);
+      setErrorMsg("");
+    } else {
+      setUserTrackedItems([]);
+      let msg = `Error ${myresponse.status}: ${myresponse.error}`;
+      setErrorMsg(msg);
+    }
+  }
+
   const addData = () => {
     //Transform data into desired format for post
     let tracked = [];
     // Object.keys returns an array of the keys in an object
     let inds = Object.keys(values);
     /* For each key in values, create an object with keys 'tracked_items_id' and 'value'
-  where the values will be the indicator id and number from 1-10 on scale */
+     where the values will be the indicator id and number from 1-10 on scale */
     for (let i in inds) {
       let obj = {
         tracked_items_id: props.indicators.find((e) => e.indicator === inds[i])
@@ -35,6 +57,16 @@ function TrackingFormView(props) {
       };
       tracked.push(obj);
     }
+
+    // fetch(`/user/${props.user.id}`)
+    //   .then((res) => res.json())
+    //   .then((json) => {
+    //     setUser(json);
+    //   })
+    //   .catch((error) => {
+    //     console.log(`Server error: ${error.message}`);
+    //   });
+
     //Post new data
     let currMonth = new Date().toISOString().slice(0, 7);
     fetch("/data", {
@@ -58,8 +90,10 @@ function TrackingFormView(props) {
       });
     navigate("/progress");
   };
+
+  console.log(userTrackedItems);
   //Add coditional here
-  if (props.todaysData.length === 0) {
+  if (todaysData.length === 0) {
     return (
       <div className="mx-5 py-5">
         <h3 className="blue mb-1" id="title">
@@ -69,8 +103,8 @@ function TrackingFormView(props) {
           How are you feeling today?
         </h2>
         <form onSubmit={handleSubmit} className="d-flex flex-column">
-          {props.user.tracked_items &&
-            props.user.tracked_items.map((ti) => (
+          {userTrackedItems &&
+            userTrackedItems.map((ti) => (
               <label
                 key={ti.indicator}
                 htmlFor="slider1"
