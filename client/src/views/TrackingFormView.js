@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
-import Local from "../helpers/Local";
+import { Link, useNavigate } from "react-router-dom";
+// import Local from "../helpers/Local";
 import Api from "../helpers/Api";
 import "./TrackingFormView.css";
 
@@ -21,7 +21,7 @@ function TrackingFormView(props) {
   function handleSubmit(event) {
     event.preventDefault();
     //Put "values" into an array, add the id
-    addData();
+    addData(values);
     setValue(defaultValues);
   }
 
@@ -42,7 +42,7 @@ function TrackingFormView(props) {
     }
   }
 
-  const addData = () => {
+  const addData = (values) => {
     //Transform data into desired format for post
     let tracked = [];
     // Object.keys returns an array of the keys in an object
@@ -51,21 +51,12 @@ function TrackingFormView(props) {
      where the values will be the indicator id and number from 1-10 on scale */
     for (let i in inds) {
       let obj = {
-        tracked_items_id: props.indicators.find((e) => e.indicator === inds[i])
+        tracked_items_id: userTrackedItems.find((e) => e.indicator === inds[i])
           .id, //find object that contains anxiety as an indicator
         value: +values[inds[i]],
       };
       tracked.push(obj);
     }
-
-    // fetch(`/user/${props.user.id}`)
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     setUser(json);
-    //   })
-    //   .catch((error) => {
-    //     console.log(`Server error: ${error.message}`);
-    //   });
 
     //Post new data
     let currMonth = new Date().toISOString().slice(0, 7);
