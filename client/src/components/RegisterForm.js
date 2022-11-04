@@ -33,6 +33,7 @@ function RegisterForm() {
           type="text"
           className="form-control"
           id="validationCustom01"
+          name="firstName"
           value={registerFormData.firstName}
           onChange={handleChange}
           required
@@ -47,6 +48,7 @@ function RegisterForm() {
           type="text"
           className="form-control"
           id="validationCustom02"
+          name="lastName"
           value={registerFormData.lastName}
           onChange={handleChange}
           required
@@ -58,16 +60,13 @@ function RegisterForm() {
           Email
         </label>
         <div className="input-group has-validation">
-          {/* <span className="input-group-text" id="inputGroupPrepend">
-            @
-          </span> */}
           <input
             type="text"
             className="form-control"
             id="validationCustomUsername"
+            name="email"
             value={registerFormData.email}
             onChange={handleChange}
-            aria-describedby="inputGroupPrepend"
             required
           />
           <div className="invalid-feedback">
@@ -83,6 +82,7 @@ function RegisterForm() {
           type="text"
           className="form-control"
           id="validationCustom03"
+          name="password"
           value={registerFormData.password}
           onChange={handleChange}
           required
