@@ -93,7 +93,7 @@ function App() {
       Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
       setUser(myresponse.data.user);
       setLoginErrorMsg("");
-      navigate("/user/:id");
+      navigate(`/user/${user.id}`);
     } else {
       setLoginErrorMsg("Login failed");
     }
