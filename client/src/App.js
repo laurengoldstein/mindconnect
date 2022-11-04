@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 
+import Local from "./helpers/Local";
+import Api from "./helpers/Api";
+
 import Navbar from "./components/Navbar";
 import HomeView from "./views/HomeView";
 
@@ -90,7 +93,7 @@ function App() {
       Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
       setUser(myresponse.data.user);
       setLoginErrorMsg("");
-      navigate("/");
+      navigate("/user/:id");
     } else {
       setLoginErrorMsg("Login failed");
     }
