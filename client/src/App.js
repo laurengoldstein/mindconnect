@@ -5,6 +5,8 @@ import "./App.css";
 import Navbar from "./components/Navbar";
 import HomeView from "./views/HomeView";
 
+import AccountAccessView from "./views/AccountAccessView";
+
 import ProgressView from "./views/ProgressView";
 import ProfileView from "./views/ProfileView";
 import EditProfileView from "./views/EditProfileView";
@@ -112,6 +114,9 @@ function App() {
       <div className=".container-sd d-flex justify-content-center bg-light align-middle mb-3">
         <Routes>
           <Route path="/" element={<HomeView />} />
+
+          <Route path="/account" element={<AccountAccessView />} />
+
           <Route
             path="user/:id"
             element={<ProfileView user={user} indicators={indicators} />}

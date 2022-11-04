@@ -1,24 +1,25 @@
-var express = require('express');
+var express = require("express");
 var router = express.Router();
+const { ensureSameUser, ensureUserLoggedIn } = require("../middleware/guards");
 const db = require("../model/helper.js");
 
-
 /* GET all tracked_items. */
-router.get('/tracked_items', function(req, res, next) {
-    db('SELECT * FROM tracked_items;')
-    .then(result => res.send(result.data))    
-    .catch((err) => res.status(500).send({error: err.message}));
-  });
+router.get("/tracked_items", function (req, res, next) {
+  db("SELECT * FROM tracked_items;")
+    .then((result) => res.send(result.data))
+    .catch((err) => res.status(500).send({ error: err.message }));
+});
 
 module.exports = router;
 
-
 /* POST new tracked_item. */
-router.post('/tracked_items', function(req, res, next) {
-  let {indicator} = req.body;
+router.post("/tracked_items", function (req, res, next) {
+  let { indicator } = req.body;
   db(`INSERT INTO tracked_items (indicator) VALUES ('${indicator}')`)
-  .then(() => {
-    db('SELECT * FROM tracked_items;')
-    .then(result => res.status(201).send(result.data))})   
-  .catch((err) => res.status(500).send({error: err.message}));
+    .then(() => {
+      db("SELECT * FROM tracked_items;").then((result) =>
+        res.status(201).send(result.data)
+      );
+    })
+    .catch((err) => res.status(500).send({ error: err.message }));
 });

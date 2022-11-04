@@ -1,25 +1,7 @@
 var express = require("express");
 var router = express.Router();
+const { ensureSameUser, ensureUserLoggedIn } = require("../middleware/guards");
 const db = require("../model/helper.js");
-
-/**
- * Guards
- **/
-
-function ensureUserExists(req, res, next) {
-  db(`SELECT * FROM user WHERE id = ${req.params.id};`)
-    .then((result) => {
-      if (result.data.length === 1) {
-        res.locals.user = result.data[0];
-        next();
-      } else {
-        res.status(404).send({ error: "User not found" });
-      }
-    })
-    .catch((err) => {
-      res.status(500).send({ error: err.message });
-    });
-}
 
 /**
  * Helpers
@@ -65,7 +47,8 @@ router.get("/", async function (req, res) {
 
 /* GET user by id. */
 /* Gets all user info from USER table + tracked items associated with that user from TRACKED_ITEMS table*/
-router.get("/:id", ensureUserExists, function (req, res) {
+router.get("/:id", ensureUserLoggedIn, ensureSameUser, function (req, res) {
+  console.log(res.locals);
   let user = res.locals.user;
   let sql = `
             SELECT u.*, t.*, u.id AS user_id, t.id AS tracked_items_id
@@ -80,36 +63,41 @@ router.get("/:id", ensureUserExists, function (req, res) {
 });
 
 /* PUT - modify existing user */
-router.put("/:id", ensureUserExists, async function (req, res) {
-  let userID = Number(req.params.id);
-  let { firstName, lastName, password, email, tracked_items_id } = req.body;
-  try {
-    await db(
-      `UPDATE user SET firstName = '${firstName}', lastName = '${lastName}', password = '${password}', email ='${email}' WHERE id = ${userID};`
-    );
-    // Remove user from TRACKED_ITEMS_USER table
-    await db(`DELETE FROM tracked_items_user WHERE user_id = ${userID};`);
-    for (let ti of tracked_items_id) {
-      // Lines below add each tracked item associated with the user to the TRACKED_ITEMS_USER table
+router.put(
+  "/:id",
+  ensureUserLoggedIn,
+  ensureSameUser,
+  async function (req, res) {
+    let userID = Number(req.params.id);
+    let { firstName, lastName, password, email, tracked_items_id } = req.body;
+    try {
       await db(
-        `INSERT INTO tracked_items_user (user_id, tracked_items_id) VALUES (${userID}, ${Number(
-          ti
-        )})`
+        `UPDATE user SET firstName = '${firstName}', lastName = '${lastName}', password = '${password}', email ='${email}' WHERE id = ${userID};`
       );
-    }
-    let result =
-      // Get all user info from USER table + tracked items associated with that user from TRACKED_ITEMS table
-      await db(`SELECT u.*, t.*, u.id AS user_id, t.id AS tracked_items_id
+      // Remove user from TRACKED_ITEMS_USER table
+      await db(`DELETE FROM tracked_items_user WHERE user_id = ${userID};`);
+      for (let ti of tracked_items_id) {
+        // Lines below add each tracked item associated with the user to the TRACKED_ITEMS_USER table
+        await db(
+          `INSERT INTO tracked_items_user (user_id, tracked_items_id) VALUES (${userID}, ${Number(
+            ti
+          )})`
+        );
+      }
+      let result =
+        // Get all user info from USER table + tracked items associated with that user from TRACKED_ITEMS table
+        await db(`SELECT u.*, t.*, u.id AS user_id, t.id AS tracked_items_id
         FROM user AS u
         LEFT JOIN tracked_items_user AS tu ON u.id = tu.user_id
         LEFT JOIN tracked_items AS t ON tu.tracked_items_id = t.id
         WHERE u.id = ${userID};`);
-    // Helper function sends back a new object for that user
-    let result2 = joinToJson(result);
-    res.status(201).send(result2);
-  } catch (err) {
-    res.status(500).send({ error: err.message });
+      // Helper function sends back a new object for that user
+      let result2 = joinToJson(result);
+      res.status(201).send(result2);
+    } catch (err) {
+      res.status(500).send({ error: err.message });
+    }
   }
-});
+);
 
 module.exports = router;
