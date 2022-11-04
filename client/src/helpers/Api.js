@@ -32,11 +32,19 @@ class Api {
   }
 
   /**
-   * Get data for user with ID 'userId'
+   * Get object for user with ID 'id'
    **/
-  //I changed UserId to id
+
   static async getUser(id) {
     return await this._doFetch(`/user/${id}`);
+  }
+
+  /**
+   * Get all data from data table associated with user with ID 'id'
+   **/
+
+  static async getUserData(id) {
+    return await this._doFetch(`/data/?user=${id}`);
   }
 
   /**

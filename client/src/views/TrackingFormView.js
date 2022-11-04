@@ -25,6 +25,10 @@ function TrackingFormView(props) {
     setValue(defaultValues);
   }
 
+  // function userTrackedItemsCb(userTrackedItems) {
+  //   return userTrackedItems;
+  // }
+
   useEffect(() => {
     fetchUserTrackedItems();
   }, []);

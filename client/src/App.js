@@ -23,14 +23,20 @@ let currDay = new Date().toISOString().slice(0, 10);
 function App() {
   let [data, setData] = useState([]);
   let [indicators, setIndicators] = useState([]);
-  let [month, setMonth] = useState(currMonth);
-  let [start, setStart] = useState("");
-  let [end, setEnd] = useState("");
+  // let [month, setMonth] = useState(currMonth);
+  // let [start, setStart] = useState("");
+  // let [end, setEnd] = useState("");
   const [user, setUser] = useState(Local.getUser());
+  // const [userTrackedItems, setUserTrackedItems] = useState([]);
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
 
   // let [todaysData, setTodaysData] = useState([]);
   let navigate = useNavigate();
+
+  // function userTrackedItemsCb(userTrackedItems) {
+  //   setUserTrackedItems(userTrackedItems);
+  //   console.log(userTrackedItems);
+  // }
 
   //Gets desired user info & tracked_items -- TRACKING FORM VIEW
   // useEffect(() => {
@@ -64,7 +70,7 @@ function App() {
   //     });
   // }, [month]);
 
-  // Gets user's data for specified day -- PROGRESS VIEW, but accesses todaysData from TrackingFormView
+  // Gets user's data for current day -- ***possibly not needed*** PROGRESS VIEW, but accesses todaysData from TrackingFormView
   // useEffect(() => {
   //   fetch(`/data/?user=${user.id}&date=${currDay}`)
   //     .then((res) => res.json())
@@ -75,21 +81,6 @@ function App() {
   //       console.log(`Server error: ${error.message}`);
   //     });
   // }, [data]);
-
-  // Gets user's data for custom time range -- PROGRESS VIEW
-  useEffect(() => {
-    if (start.length !== 0 && end.length !== 0)
-      fetch(
-        `http://localhost:5000/data/custom?user=${user.id}&start=${start}&end=${end}`
-      )
-        .then((res) => res.json())
-        .then((json) => {
-          setData(json);
-        })
-        .catch((error) => {
-          console.log(`Server error: ${error.message}`);
-        });
-  }, [start, end]);
 
   async function login(email, password) {
     let myresponse = await Api.loginUser(email, password);
@@ -169,7 +160,7 @@ function App() {
               <ProgressView
                 user={user}
                 data={data}
-                indicators={indicators}
+                // userTrackedItems={userTrackedItems}
                 // setMonth={(selectedMonth) => setMonth(selectedMonth)}
                 // setStart={(start) => setStart(start)}
                 // setEnd={(end) => setEnd(end)}
@@ -182,8 +173,7 @@ function App() {
               <TrackingFormView
                 setData={(data) => setData(data)}
                 user={user}
-                indicators={indicators}
-                // todaysData={todaysData}
+                // userTrackedItemsCb={userTrackedItemsCb}
               />
             }
           />
