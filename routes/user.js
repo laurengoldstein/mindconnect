@@ -48,14 +48,14 @@ router.get("/", async function (req, res) {
 /* GET user by id. */
 /* Gets all user info from USER table + tracked items associated with that user from TRACKED_ITEMS table*/
 router.get("/:id", ensureUserLoggedIn, ensureSameUser, function (req, res) {
-  console.log(res.locals);
-  let user = res.locals.user;
+  // console.log(res.locals);
+  // let user = res.locals.user;
   let sql = `
             SELECT u.*, t.*, u.id AS user_id, t.id AS tracked_items_id
             FROM user AS u
             LEFT JOIN tracked_items_user AS tu ON u.id = tu.user_id
             LEFT JOIN tracked_items AS t ON tu.tracked_items_id = t.id
-            WHERE u.id = ${user.id};
+            WHERE u.id = ${req.params.id};
         `;
   db(sql)
     .then((result) => res.send(joinToJson(result)))

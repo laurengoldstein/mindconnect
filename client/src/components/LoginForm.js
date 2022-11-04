@@ -21,8 +21,9 @@ function LoginForm(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
+    // data is sent as 2 separate strings
     console.log(email, password);
-    // props.loginCb(username, password);
+    // props.loginCb(email, password);
   }
 
   return (

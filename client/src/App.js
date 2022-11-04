@@ -18,12 +18,13 @@ let currMonth = new Date().toISOString().slice(0, 7);
 let currDay = new Date().toISOString().slice(0, 10);
 
 function App() {
-  let [user, setUser] = useState({});
   let [data, setData] = useState([]);
   let [indicators, setIndicators] = useState([]);
-  let [month, setMonth] = useState(currMonth);
-  let [start, setStart] = useState("");
-  let [end, setEnd] = useState("");
+  // let [month, setMonth] = useState(currMonth);
+  // let [start, setStart] = useState("");
+  // let [end, setEnd] = useState("");
+  const [user, setUser] = useState(Local.getUser());
+  const [loginErrorMsg, setLoginErrorMsg] = useState("");
 
   let [todaysData, setTodaysData] = useState([]);
   let navigate = useNavigate();
@@ -83,6 +84,18 @@ function App() {
   //       });
   // }, [start, end]);
 
+  async function login(email, password) {
+    let myresponse = await Api.loginUser(email, password);
+    if (myresponse.ok) {
+      Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
+      setUser(myresponse.data.user);
+      setLoginErrorMsg("");
+      navigate("/");
+    } else {
+      setLoginErrorMsg("Login failed");
+    }
+  }
+
   function updateProfile(input) {
     console.log(input);
     fetch(`/user/${user.id}`, {
@@ -115,7 +128,12 @@ function App() {
         <Routes>
           <Route path="/" element={<HomeView />} />
 
-          <Route path="/account" element={<AccountAccessView />} />
+          <Route
+            path="/account"
+            element={
+              <AccountAccessView loginCb={(email, pw) => login(email, pw)} />
+            }
+          />
 
           <Route
             path="user/:id"
@@ -139,9 +157,9 @@ function App() {
                 user={user}
                 data={data}
                 indicators={indicators}
-                setMonth={(selectedMonth) => setMonth(selectedMonth)}
-                setStart={(start) => setStart(start)}
-                setEnd={(end) => setEnd(end)}
+                // setMonth={(selectedMonth) => setMonth(selectedMonth)}
+                // setStart={(start) => setStart(start)}
+                // setEnd={(end) => setEnd(end)}
               />
             }
           />

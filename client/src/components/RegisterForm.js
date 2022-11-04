@@ -17,7 +17,7 @@ function RegisterForm() {
   function handleSubmit(event) {
     event.preventDefault();
     console.log(registerFormData);
-    // props.updateProjectCb(projectFormData);
+    // props.registerAccountCb(registerFormData);
   }
   return (
     <form

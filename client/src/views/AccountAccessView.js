@@ -8,7 +8,7 @@ function AccountAccessView(props) {
     <div className="AccountAccessView">
       <h2>Welcome back!</h2>
       <h3>Please login to access your account.</h3>
-      <LoginForm />
+      <LoginForm loginCb={(email, pw) => props.loginCb(email, pw)} />
 
       <h2>New to Mindconnect?</h2>
       <h3>Please register to create a user account.</h3>
