@@ -1,42 +1,48 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function LoginForm() {
-  let [loginFormData, setLoginFormData] = useState([]);
+function LoginForm(props) {
+  let [email, setEmail] = useState("");
+  let [password, setPassword] = useState("");
 
   function handleChange(event) {
-    const value = event.target.value;
-    const name = event.target.name;
-
-    setLoginFormData((state) => ({
-      ...state,
-      [name]: value,
-    }));
+    let { name, value } = event.target;
+    switch (name) {
+      case "email":
+        setEmail(value);
+        break;
+      case "password":
+        setPassword(value);
+        break;
+      default:
+        break;
+    }
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(loginFormData);
-    // props.updateProjectCb(projectFormData);
+    console.log(email, password);
+    // props.loginCb(username, password);
   }
 
   return (
-    <form className="row g-3 needs-validation" noValidate>
+    <form
+      className="row g-3 needs-validation"
+      noValidate
+      onSubmit={handleSubmit}
+    >
       <div className="col-md-4">
-        <label htmlFor="validationCustomUsername" className="form-label">
+        <label htmlFor="validationCustomEmail" className="form-label">
           Email
         </label>
         <div className="input-group has-validation">
-          {/* <span className="input-group-text" id="inputGroupPrepend">
-            @
-          </span> */}
           <input
             type="text"
             className="form-control"
-            id="validationCustomUsername"
-            aria-describedby="inputGroupPrepend"
+            id="validationCustomEmail"
+            name="email"
             required
-            value={loginFormData.email}
+            value={email}
             onChange={handleChange}
           />
           <div className="invalid-feedback">
@@ -46,14 +52,15 @@ function LoginForm() {
       </div>
 
       <div className="col-md-6">
-        <label htmlFor="validationCustom03" className="form-label">
+        <label htmlFor="validationCustomPassword" className="form-label">
           Password
         </label>
         <input
           type="text"
           className="form-control"
-          id="validationCustom03"
-          value={loginFormData.password}
+          id="validationCustomPassword"
+          name="password"
+          value={password}
           required
           onChange={handleChange}
         />
@@ -61,11 +68,7 @@ function LoginForm() {
       </div>
 
       <div className="col-12">
-        <button
-          className="btn btn-primary"
-          type="submit"
-          onSubmit={handleSubmit}
-        >
+        <button className="btn btn-primary" type="submit">
           Login
         </button>
       </div>

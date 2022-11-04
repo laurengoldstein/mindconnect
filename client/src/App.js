@@ -28,60 +28,60 @@ function App() {
   let [todaysData, setTodaysData] = useState([]);
   let navigate = useNavigate();
 
-  useEffect(() => {
-    fetch(`/user/1`)
-      .then((res) => res.json())
-      .then((json) => {
-        setUser(json);
-      })
-      .catch((error) => {
-        console.log(`Server error: ${error.message}`);
-      });
-    fetch("/tracked_items")
-      .then((res) => res.json())
-      .then((json) => {
-        setIndicators(json);
-      })
-      .catch((error) => {
-        console.log(`Server error: ${error.message}`);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`/user/1`)
+  //     .then((res) => res.json())
+  //     .then((json) => {
+  //       setUser(json);
+  //     })
+  //     .catch((error) => {
+  //       console.log(`Server error: ${error.message}`);
+  //     });
+  //   fetch("/tracked_items")
+  //     .then((res) => res.json())
+  //     .then((json) => {
+  //       setIndicators(json);
+  //     })
+  //     .catch((error) => {
+  //       console.log(`Server error: ${error.message}`);
+  //     });
+  // }, []);
 
-  useEffect(() => {
-    fetch(`/data/?user=1&month=${month}`)
-      .then((res) => res.json())
-      .then((json) => {
-        setData(json);
-      })
-      .catch((error) => {
-        console.log(`Server error: ${error.message}`);
-      });
-  }, [month]);
+  // useEffect(() => {
+  //   fetch(`/data/?user=1&month=${month}`)
+  //     .then((res) => res.json())
+  //     .then((json) => {
+  //       setData(json);
+  //     })
+  //     .catch((error) => {
+  //       console.log(`Server error: ${error.message}`);
+  //     });
+  // }, [month]);
 
-  useEffect(() => {
-    fetch(`/data/?user=1&date=${currDay}`)
-      .then((res) => res.json())
-      .then((json) => {
-        setTodaysData(json);
-      })
-      .catch((error) => {
-        console.log(`Server error: ${error.message}`);
-      });
-  }, [data]);
+  // useEffect(() => {
+  //   fetch(`/data/?user=1&date=${currDay}`)
+  //     .then((res) => res.json())
+  //     .then((json) => {
+  //       setTodaysData(json);
+  //     })
+  //     .catch((error) => {
+  //       console.log(`Server error: ${error.message}`);
+  //     });
+  // }, [data]);
 
-  useEffect(() => {
-    if (start.length !== 0 && end.length !== 0)
-      fetch(
-        `http://localhost:5000/data/custom?user=1&start=${start}&end=${end}`
-      )
-        .then((res) => res.json())
-        .then((json) => {
-          setData(json);
-        })
-        .catch((error) => {
-          console.log(`Server error: ${error.message}`);
-        });
-  }, [start, end]);
+  // useEffect(() => {
+  //   if (start.length !== 0 && end.length !== 0)
+  //     fetch(
+  //       `http://localhost:5000/data/custom?user=1&start=${start}&end=${end}`
+  //     )
+  //       .then((res) => res.json())
+  //       .then((json) => {
+  //         setData(json);
+  //       })
+  //       .catch((error) => {
+  //         console.log(`Server error: ${error.message}`);
+  //       });
+  // }, [start, end]);
 
   function updateProfile(input) {
     console.log(input);

@@ -13,14 +13,18 @@ function RegisterForm() {
       [name]: value,
     }));
   }
-  console.log(registerFormData);
+
   function handleSubmit(event) {
     event.preventDefault();
     console.log(registerFormData);
     // props.updateProjectCb(projectFormData);
   }
   return (
-    <form className="row g-3 needs-validation" noValidate>
+    <form
+      className="row g-3 needs-validation"
+      noValidate
+      onSubmit={handleSubmit}
+    >
       <div className="col-md-4">
         <label htmlFor="validationCustom01" className="form-label">
           First name
@@ -104,11 +108,7 @@ function RegisterForm() {
         </div>
       </div>
       <div className="col-12">
-        <button
-          className="btn btn-primary"
-          type="submit"
-          onSubmit={handleSubmit}
-        >
+        <button className="btn btn-primary" type="submit">
           Register
         </button>
       </div>
