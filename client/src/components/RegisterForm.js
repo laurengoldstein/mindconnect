@@ -1,7 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 function RegisterForm() {
+  let [registerFormData, setRegisterFormData] = useState([]);
+
+  function handleChange(event) {
+    const value = event.target.value;
+    const name = event.target.name;
+
+    setRegisterFormData((state) => ({
+      ...state,
+      [name]: value,
+    }));
+  }
+  console.log(registerFormData);
+  function handleSubmit(event) {
+    event.preventDefault();
+    console.log(registerFormData);
+    // props.updateProjectCb(projectFormData);
+  }
   return (
     <form className="row g-3 needs-validation" noValidate>
       <div className="col-md-4">
@@ -12,7 +29,8 @@ function RegisterForm() {
           type="text"
           className="form-control"
           id="validationCustom01"
-          value="Mark"
+          value={registerFormData.firstName}
+          onChange={handleChange}
           required
         />
         <div className="valid-feedback">Looks good!</div>
@@ -25,7 +43,8 @@ function RegisterForm() {
           type="text"
           className="form-control"
           id="validationCustom02"
-          value="Otto"
+          value={registerFormData.lastName}
+          onChange={handleChange}
           required
         />
         <div className="valid-feedback">Looks good!</div>
@@ -42,6 +61,8 @@ function RegisterForm() {
             type="text"
             className="form-control"
             id="validationCustomUsername"
+            value={registerFormData.email}
+            onChange={handleChange}
             aria-describedby="inputGroupPrepend"
             required
           />
@@ -58,6 +79,8 @@ function RegisterForm() {
           type="text"
           className="form-control"
           id="validationCustom03"
+          value={registerFormData.password}
+          onChange={handleChange}
           required
         />
         <div className="invalid-feedback">Please provide a password.</div>
@@ -81,8 +104,12 @@ function RegisterForm() {
         </div>
       </div>
       <div className="col-12">
-        <button className="btn btn-primary" type="submit">
-          Submit form
+        <button
+          className="btn btn-primary"
+          type="submit"
+          onSubmit={handleSubmit}
+        >
+          Register
         </button>
       </div>
     </form>
