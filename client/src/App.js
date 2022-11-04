@@ -90,13 +90,20 @@ function App() {
   async function login(email, password) {
     let myresponse = await Api.loginUser(email, password);
     if (myresponse.ok) {
+      // console.log(myresponse.data.user); RETRIEVED user obj
       Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
       setUser(myresponse.data.user);
       setLoginErrorMsg("");
-      navigate(`/user/${user.id}`);
+      navigate(`/user/${myresponse.data.user.id}`);
     } else {
       setLoginErrorMsg("Login failed");
     }
+  }
+
+  function logout() {
+    Local.removeUserInfo();
+    setUser(null);
+    // (NavBar will send user to home page)
   }
 
   function updateProfile(input) {
@@ -119,13 +126,11 @@ function App() {
     navigate("user/:id");
   }
 
-  //Set default values for input
-
   return (
     <div className="App container">
       <img className="Logo" src="Logo.png" alt="Mind Connect Logo" />
 
-      <Navbar />
+      <Navbar user={user} logoutCb={logout} />
 
       <div className=".container-sd d-flex justify-content-center bg-light align-middle mb-3">
         <Routes>
