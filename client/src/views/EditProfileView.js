@@ -30,7 +30,6 @@ function EditProfileView(props) {
   function handleChange(event) {
     let { name, value } = event.target;
     setInput((input) => ({ ...input, [name]: value }));
-    console.log("tracking", tracking);
   }
 
   function handleSubmit(event) {
@@ -59,18 +58,19 @@ function EditProfileView(props) {
     let isChecked = event.target.checked;
     if (isChecked) {
       tracking.push(event.target.name);
+      console.log("tracking", tracking);
     } else if (!isChecked) {
       tracking = tracking.filter((e) => e !== event.target.name);
     }
     return tracking;
   }
 
-  function handleChangeIndicator(event) {
+  function handleAddNewIndicator(event) {
     setNewIndicator(event.target.value);
   }
 
   // adds new indicator to user's tracked items by calling addIndicator function below
-  function handleSubmitIndicator(event) {
+  function handleSubmitNewIndicator(event) {
     event.preventDefault();
     addIndicator();
     setNewIndicator("");
@@ -156,7 +156,6 @@ function EditProfileView(props) {
                 <input
                   className="form-check-input me-2"
                   type="checkbox"
-                  defaultChecked={true}
                   name={ti.indicator}
                   id={ti.indicator}
                   onChange={(e) => changeIndicators(e)}
@@ -170,7 +169,7 @@ function EditProfileView(props) {
             className="me-2"
             id="add-button"
             type="button"
-            onClick={(e) => handleSubmitIndicator(e)}
+            onClick={(e) => handleSubmitNewIndicator(e)}
           >
             +
           </button>
@@ -179,7 +178,7 @@ function EditProfileView(props) {
             type="text"
             placeholder="Add new indicator"
             defaultValue={newIndicator}
-            onChange={(e) => handleChangeIndicator(e)}
+            onChange={(e) => handleAddNewIndicator(e)}
           />
         </label>
 

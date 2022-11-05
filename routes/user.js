@@ -60,9 +60,10 @@ router.get("/:id", ensureSameUser, function (req, res) {
     .then((result) => res.send(joinToJson(result)))
     .catch((err) => res.status(500).send({ error: err.message }));
 });
-
+// ensureSameUser,
 /* PUT - modify existing user */
-router.put("/:id", ensureSameUser, async function (req, res) {
+router.put("/:id", async function (req, res) {
+  console.log("REQ");
   let userID = Number(req.params.id);
   let { firstName, lastName, password, email, tracked_items_id } = req.body;
   try {
