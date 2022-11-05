@@ -15,6 +15,7 @@ import "./ProgressView.css";
 
 function ProgressView(props) {
   let currMonth = new Date().toISOString().slice(0, 7);
+  let currDay = new Date().toISOString().slice(0, 10);
 
   let [selectedView, setView] = useState("month");
   let [month, setMonth] = useState(currMonth);

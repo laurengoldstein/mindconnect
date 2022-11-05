@@ -17,9 +17,6 @@ import EditProfileView from "./views/EditProfileView";
 import TrackingFormView from "./views/TrackingFormView";
 import Error404View from "./views/Error404View";
 
-let currMonth = new Date().toISOString().slice(0, 7);
-let currDay = new Date().toISOString().slice(0, 10);
-
 function App() {
   let [data, setData] = useState([]);
   let [indicators, setIndicators] = useState([]);

@@ -34,7 +34,6 @@ function TrackingFormView(props) {
   }, []);
 
   async function fetchUserTrackedItems() {
-    // Get "Members Only" message for authenticated users
     let myresponse = await Api.getUser(`/${props.user.id}`);
     if (myresponse.ok) {
       setUserTrackedItems(myresponse.data.tracked_items);
@@ -86,7 +85,7 @@ function TrackingFormView(props) {
     navigate("/progress");
   };
 
-  console.log(userTrackedItems);
+  console.log(todaysData);
   //Add coditional here
   if (todaysData.length === 0) {
     return (
