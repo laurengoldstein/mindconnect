@@ -86,8 +86,8 @@ function EditProfileView(props) {
     })
       // Continue fetch request here
       .then((res) => {
-        res.json().then((json) => {
-          setUserTrackedItems(json);
+        res.json().then(() => {
+          fetchUserTrackedItems();
         });
       })
       .catch((error) => {
