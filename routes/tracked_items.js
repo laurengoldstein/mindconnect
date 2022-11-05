@@ -14,8 +14,15 @@ module.exports = router;
 
 /* POST new tracked_item. */
 router.post("/tracked_items", function (req, res, next) {
-  let { indicator } = req.body;
-  db(`INSERT INTO tracked_items (indicator) VALUES ('${indicator}')`)
+  let { indicator, user_id } = req.body;
+  db(
+    `INSERT INTO tracked_items (indicator) VALUES ('${indicator}'); SELECT LAST_INSERT_ID();`
+  )
+    .then((data) => {
+      db(
+        `INSERT INTO tracked_items_user (user_id, tracked_items_id) VALUES (${user_id}, ${data.data[0].insertId});`
+      );
+    })
     .then(() => {
       db("SELECT * FROM tracked_items;").then((result) =>
         res.status(201).send(result.data)

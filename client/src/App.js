@@ -20,20 +20,11 @@ import Error404View from "./views/Error404View";
 function App() {
   let [data, setData] = useState([]);
   let [indicators, setIndicators] = useState([]);
-  // let [month, setMonth] = useState(currMonth);
-  // let [start, setStart] = useState("");
-  // let [end, setEnd] = useState("");
   const [user, setUser] = useState(Local.getUser());
-  // const [userTrackedItems, setUserTrackedItems] = useState([]);
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
 
   // let [todaysData, setTodaysData] = useState([]);
   let navigate = useNavigate();
-
-  // function userTrackedItemsCb(userTrackedItems) {
-  //   setUserTrackedItems(userTrackedItems);
-  //   console.log(userTrackedItems);
-  // }
 
   //Gets desired user info & tracked_items -- TRACKING FORM VIEW
   // useEffect(() => {
@@ -88,7 +79,7 @@ function App() {
 
   // updates user's profile info -- EDIT PROFILE VIEW
   function updateProfile(input) {
-    console.log(input);
+    // console.log(input);
     fetch(`/user/${user.id}`, {
       method: "PUT",
       headers: {

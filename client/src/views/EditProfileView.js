@@ -1,17 +1,36 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Error404View from "./Error404View";
+import Api from "../helpers/Api";
 import "./EditProfileView.css";
 
 function EditProfileView(props) {
   let [input, setInput] = useState({});
   let [newIndicator, setNewIndicator] = useState("");
+  let [userTrackedItems, setUserTrackedItems] = useState([]);
+  let [errorMsg, setErrorMsg] = useState("");
 
   let tracking = [];
+
+  useEffect(() => {
+    fetchUserTrackedItems();
+  }, []);
+
+  async function fetchUserTrackedItems() {
+    let myresponse = await Api.getUser(`/${props.user.id}`);
+    if (myresponse.ok) {
+      setUserTrackedItems(myresponse.data.tracked_items);
+      setErrorMsg("");
+    } else {
+      setUserTrackedItems([]);
+      let msg = `Error ${myresponse.status}: ${myresponse.error}`;
+      setErrorMsg(msg);
+    }
+  }
 
   function handleChange(event) {
     let { name, value } = event.target;
     setInput((input) => ({ ...input, [name]: value }));
-    console.log(tracking);
+    console.log("tracking", tracking);
   }
 
   function handleSubmit(event) {
@@ -20,7 +39,7 @@ function EditProfileView(props) {
     let modifiedProfile = { ...input };
     modifiedProfile.tracked_items_id = [];
     for (let e in tracking) {
-      let tracked_obj = props.indicators.find(
+      let tracked_obj = userTrackedItems.find(
         (t) => t.indicator === tracking[e]
       );
       modifiedProfile.tracked_items_id.push(tracked_obj.id);
@@ -32,8 +51,10 @@ function EditProfileView(props) {
     }
     delete modifiedProfile.id;
     props.updateProfile(modifiedProfile);
+    console.log("modified profile", modifiedProfile);
   }
 
+  // changes indicators based on whether they are checked
   function changeIndicators(event) {
     let isChecked = event.target.checked;
     if (isChecked) {
@@ -48,12 +69,13 @@ function EditProfileView(props) {
     setNewIndicator(event.target.value);
   }
 
+  // adds new indicator to user's tracked items by calling addIndicator function below
   function handleSubmitIndicator(event) {
     event.preventDefault();
     addIndicator();
     setNewIndicator("");
   }
-
+  //adds a new item to the tracked_items data table
   function addIndicator() {
     fetch("/tracked_items", {
       method: "POST",
@@ -65,7 +87,7 @@ function EditProfileView(props) {
       // Continue fetch request here
       .then((res) => {
         res.json().then((json) => {
-          props.setIndicators(json);
+          setUserTrackedItems(json);
         });
       })
       .catch((error) => {
@@ -128,12 +150,13 @@ function EditProfileView(props) {
 
         <h3 className="blue">Currently tracking:</h3>
         <ul className="trackingList">
-          {props.indicators &&
-            props.indicators.map((ti) => (
+          {userTrackedItems &&
+            userTrackedItems.map((ti) => (
               <li key={ti.id}>
                 <input
                   className="form-check-input me-2"
                   type="checkbox"
+                  defaultChecked={true}
                   name={ti.indicator}
                   id={ti.indicator}
                   onChange={(e) => changeIndicators(e)}
