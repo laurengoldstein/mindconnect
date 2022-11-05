@@ -26,13 +26,8 @@ function ProfileView(props) {
     }
   }
 
-  // props.user.tracked_items &&
-  //   props.user.tracked_items.forEach((e) => tracking.push(e.indicator));
-
   userTrackedItems &&
     userTrackedItems.forEach((e) => tracking.push(e.indicator));
-
-  console.log(tracking);
 
   return (
     <div>
@@ -56,17 +51,17 @@ function ProfileView(props) {
         </ul>
         <h3 className="blue me-5">Currently tracking:</h3>
         <ul className="trackingList me-5">
-          {tracking &&
-            tracking.map((ti) => (
-              <li key={ti}>
+          {userTrackedItems &&
+            userTrackedItems.map((ti) => (
+              <li key={ti.id}>
                 <input
                   className="form-check-input me-2"
                   type="checkbox"
                   disabled
                   readOnly
-                  checked={tracking.includes(ti) ? true : false}
+                  checked={tracking.includes(ti.indicator) ? true : false}
                 />
-                {ti}
+                {ti.indicator}
               </li>
             ))}
         </ul>
