@@ -16,7 +16,7 @@ import "./ProgressView.css";
 function ProgressView(props) {
   let currMonth = new Date().toISOString().slice(0, 7);
 
-  let [selectedView, setView] = useState(currMonth);
+  let [selectedView, setView] = useState("month");
   let [month, setMonth] = useState(currMonth);
   let [start, setStart] = useState("");
   let [end, setEnd] = useState("");
@@ -24,7 +24,7 @@ function ProgressView(props) {
   let [errorMsg, setErrorMsg] = useState("");
   let [userTrackedItems, setUserTrackedItems] = useState([]);
 
-  const data = props.data;
+  // const data = props.data;
 
   let colors = [
     "red",
@@ -39,7 +39,6 @@ function ProgressView(props) {
     "lightblue",
   ];
 
-  // Gets user's data for custom time range -- PROGRESS VIEW
   useEffect(() => {
     fetchUserData();
     fetchUserTrackedItems();
@@ -48,6 +47,10 @@ function ProgressView(props) {
   useEffect(() => {
     fetchCustomDates();
   }, [start, end]);
+
+  useEffect(() => {
+    fetchMonthData();
+  }, [month]);
 
   async function fetchUserData() {
     // Get user's basic data
@@ -90,19 +93,17 @@ function ProgressView(props) {
     }
   }
 
-  //   useEffect(() => {
-  //     if (start.length !== 0 && end.length !== 0)
-  //     fetch(
-  //       `http://localhost:5000/data/custom?user=${props.user.id}&start=${start}&end=${end}`
-  //     )
-  //       .then((res) => res.json())
-  //       .then((json) => {
-  //         setUserData(json);
-  //       })
-  //       .catch((error) => {
-  //         console.log(`Server error: ${error.message}`);
-  //       });
-  // }, [start, end]);
+  //Gets user's data for a specified month
+  async function fetchMonthData() {
+    fetch(`/data/?user=${props.user.id}&month=${month}`)
+      .then((res) => res.json())
+      .then((json) => {
+        setUserData(json);
+      })
+      .catch((error) => {
+        console.log(`Server error: ${error.message}`);
+      });
+  }
 
   const renderLineChar = (
     <ResponsiveContainer width="100%" height="90%">

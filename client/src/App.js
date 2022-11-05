@@ -58,18 +58,6 @@ function App() {
   //     });
   // }, []);
 
-  //Gets user's data for a specified month -- PROGRESS VIEW
-  // useEffect(() => {
-  //   fetch(`/data/?user=${user.id}&month=${month}`)
-  //     .then((res) => res.json())
-  //     .then((json) => {
-  //       setData(json);
-  //     })
-  //     .catch((error) => {
-  //       console.log(`Server error: ${error.message}`);
-  //     });
-  // }, [month]);
-
   // Gets user's data for current day -- ***possibly not needed*** PROGRESS VIEW, but accesses todaysData from TrackingFormView
   // useEffect(() => {
   //   fetch(`/data/?user=${user.id}&date=${currDay}`)
