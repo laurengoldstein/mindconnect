@@ -24,9 +24,9 @@ router.post("/tracked_items", function (req, res, next) {
       );
     })
     .then(() => {
-      db("SELECT * FROM tracked_items;").then((result) =>
-        res.status(201).send(result.data)
-      );
+      db(
+        `SELECT * FROM tracked_items LEFT JOIN tracked_items_user ON tracked_items_user.tracked_items_id=tracked_items.id WHERE user_id=${user_id};`
+      ).then((result) => res.status(201).send(result.data));
     })
     .catch((err) => res.status(500).send({ error: err.message }));
 });
