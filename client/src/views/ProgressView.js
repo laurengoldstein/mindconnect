@@ -45,8 +45,12 @@ function ProgressView(props) {
     fetchUserTrackedItems();
   }, []);
 
+  useEffect(() => {
+    fetchCustomDates();
+  }, [start, end]);
+
   async function fetchUserData() {
-    // Get "Members Only" message for authenticated users
+    // Get user's basic data
     let myresponse = await Api.getUserData(`${props.user.id}`);
     if (myresponse.ok) {
       setUserData(myresponse.data);
@@ -59,7 +63,7 @@ function ProgressView(props) {
   }
 
   async function fetchUserTrackedItems() {
-    // Get "Members Only" message for authenticated users
+    // Get tracked items tied to the authenticated user
     let myresponse = await Api.getUser(`/${props.user.id}`);
     if (myresponse.ok) {
       setUserTrackedItems(myresponse.data.tracked_items);
@@ -71,21 +75,34 @@ function ProgressView(props) {
     }
   }
 
-  //   console.log(userTrackedItems);
+  async function fetchCustomDates() {
+    if (start.length !== 0 && end.length !== 0) {
+      fetch(
+        `http://localhost:5000/data/custom?user=${props.user.id}&start=${start}&end=${end}`
+      )
+        .then((res) => res.json())
+        .then((json) => {
+          setUserData(json);
+        })
+        .catch((error) => {
+          console.log(`Server error: ${error.message}`);
+        });
+    }
+  }
 
   //   useEffect(() => {
   //     if (start.length !== 0 && end.length !== 0)
-  //       fetch(
-  //         `http://localhost:5000/data/custom?user=${props.user.id}&start=${start}&end=${end}`
-  //       )
-  //         .then((res) => res.json())
-  //         .then((json) => {
-  //           setUserData(json);
-  //         })
-  //         .catch((error) => {
-  //           console.log(`Server error: ${error.message}`);
-  //         });
-  //   }, [start, end]);
+  //     fetch(
+  //       `http://localhost:5000/data/custom?user=${props.user.id}&start=${start}&end=${end}`
+  //     )
+  //       .then((res) => res.json())
+  //       .then((json) => {
+  //         setUserData(json);
+  //       })
+  //       .catch((error) => {
+  //         console.log(`Server error: ${error.message}`);
+  //       });
+  // }, [start, end]);
 
   const renderLineChar = (
     <ResponsiveContainer width="100%" height="90%">
@@ -121,13 +138,13 @@ function ProgressView(props) {
   function handleChange(event) {
     if (event.target.name === "selected-month") {
       let selectedMonth = event.target.value;
-      props.setMonth(selectedMonth);
+      setMonth(selectedMonth);
     } else if (event.target.name === "start-date") {
-      props.setStart(event.target.value);
+      setStart(event.target.value);
     } else if (event.target.name === "end-date") {
       let endDate = DateTime.fromISO(event.target.value);
       endDate = endDate.plus({ days: 1 }).toSQLDate();
-      props.setEnd(endDate);
+      setEnd(endDate);
     }
   }
 
@@ -139,7 +156,7 @@ function ProgressView(props) {
       setView("custom");
     }
   }
-  //   console.log(props.userTrackedItems);
+
   return (
     <div className="d-flex flex-column mx-5 mb-4" id="flexCont">
       <div className="btn-group" role="group">
