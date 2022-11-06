@@ -1,5 +1,7 @@
 var express = require("express");
 var router = express.Router();
+const bcrypt = require("bcrypt");
+const { BCRYPT_WORK_FACTOR, SECRET_KEY } = require("../config");
 const { ensureSameUser } = require("../middleware/guards");
 const db = require("../model/helper.js");
 
@@ -66,9 +68,10 @@ router.put("/:id", async function (req, res) {
   console.log("REQ");
   let userID = Number(req.params.id);
   let { firstName, lastName, password, email, tracked_items_id } = req.body;
+  let hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
   try {
     await db(
-      `UPDATE user SET firstName = '${firstName}', lastName = '${lastName}', password = '${password}', email ='${email}' WHERE id = ${userID};`
+      `UPDATE user SET firstName = '${firstName}', lastName = '${lastName}', password = '${hashedPassword}', email ='${email}' WHERE id = ${userID};`
     );
     // Remove user from TRACKED_ITEMS_USER table
     await db(`DELETE FROM tracked_items_user WHERE user_id = ${userID};`);
