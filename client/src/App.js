@@ -63,6 +63,8 @@ function App() {
     let myresponse = await Api.updateUserProfile(input);
     if (myresponse.ok) {
       console.log("myresponse", myresponse);
+      // Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
+      setUser(myresponse.data);
       setErrorMsg("");
       navigate(`/user/${myresponse.data.id}`);
     } else {
