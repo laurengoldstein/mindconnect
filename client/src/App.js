@@ -62,9 +62,9 @@ function App() {
   async function updateProfile(input) {
     let myresponse = await Api.updateUserProfile(input);
     if (myresponse.ok) {
-      console.log(myresponse.data.user);
+      console.log("myresponse", myresponse);
       setErrorMsg("");
-      navigate(`/user/${myresponse.data.user.id}`);
+      navigate(`/user/${myresponse.data.id}`);
     } else {
       let msg = `Error ${myresponse.status}: ${myresponse.error}`;
       setErrorMsg(msg);
