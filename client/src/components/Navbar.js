@@ -36,12 +36,18 @@ function Navbar(props) {
               {props.user ? (
                 <>
                   <li className="nav-item">
-                    <NavLink to="/track" className="nav-link">
+                    <NavLink
+                      to={`/track/${props.user.id}`}
+                      className="nav-link"
+                    >
                       Tracking Page
                     </NavLink>
                   </li>
                   <li className="nav-item">
-                    <NavLink to="/progress" className="nav-link">
+                    <NavLink
+                      to={`/progress/${props.user.id}`}
+                      className="nav-link"
+                    >
                       Progress Page
                     </NavLink>
                   </li>

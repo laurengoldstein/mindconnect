@@ -32,7 +32,7 @@ function ProfileView(props) {
   return (
     <div>
       <div className="d-flex flex-column ms-5 pb-5 pt-3 me-0 ">
-        <Link to="/edit">
+        <Link to={`/edit/${props.user.id}`}>
           <button className="mb-3 float-end" type="button" id="edit">
             <img src="../Edit_icon.png" alt="edit icon" id="edit-icon" />
             Edit profile

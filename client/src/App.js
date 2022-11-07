@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import "./App.css";
 
@@ -22,29 +22,10 @@ function App() {
   let [indicators, setIndicators] = useState([]);
   const [user, setUser] = useState(Local.getUser());
   const [loginErrorMsg, setLoginErrorMsg] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   // let [todaysData, setTodaysData] = useState([]);
   let navigate = useNavigate();
-
-  //Gets desired user info & tracked_items -- TRACKING FORM VIEW
-  // useEffect(() => {
-  //   fetch(`/user/1`)
-  //     .then((res) => res.json())
-  //     .then((json) => {
-  //       setUser(json);
-  //     })
-  //     .catch((error) => {
-  //       console.log(`Server error: ${error.message}`);
-  //     });
-  //   fetch("/tracked_items")
-  //     .then((res) => res.json())
-  //     .then((json) => {
-  //       setIndicators(json);
-  //     })
-  //     .catch((error) => {
-  //       console.log(`Server error: ${error.message}`);
-  //     });
-  // }, []);
 
   // Gets user's data for current day -- ***possibly not needed*** PROGRESS VIEW, but accesses todaysData from TrackingFormView
   // useEffect(() => {
@@ -78,25 +59,35 @@ function App() {
   }
 
   // updates user's profile info -- EDIT PROFILE VIEW
-  function updateProfile(input) {
-    // console.log(input);
-    fetch(`/user/${user.id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(input),
-    })
-      .then((res) => {
-        res.json().then((json) => {
-          setUser(json);
-        });
-      })
-      .catch((error) => {
-        console.log(`Server error: ${error.message}`);
-      });
-    navigate(`/user/${user.id}`);
+  async function updateProfile(input) {
+    let myresponse = await Api.updateUserProfile(input);
+    if (myresponse.ok) {
+      // console.log(myresponse.data.user); RETRIEVED user obj
+      setErrorMsg("");
+      navigate(`/user/${myresponse.data.user.id}`);
+    } else {
+      let msg = `Error ${myresponse.status}: ${myresponse.error}`;
+      setErrorMsg(msg);
+    }
   }
+  // console.log(input);
+  // fetch(`/user/${user.id}`, {
+  //   method: "PUT",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify(input),
+  // })
+  //   .then((res) => {
+  //     res.json().then((json) => {
+  //       setUser(json);
+  //     });
+  //   })
+  //   .catch((error) => {
+  //     console.log(`Server error: ${error.message}`);
+  //   });
+  // navigate(`/user/${user.id}`);
+  // }
 
   return (
     <div className="App container">
@@ -120,7 +111,7 @@ function App() {
             element={<ProfileView user={user} indicators={indicators} />}
           />
           <Route
-            path="edit"
+            path="edit/:id"
             element={
               <EditProfileView
                 user={user}
@@ -131,7 +122,7 @@ function App() {
             }
           />
           <Route
-            path="progress"
+            path="progress/:id"
             element={
               <ProgressView
                 user={user}
@@ -144,7 +135,7 @@ function App() {
             }
           />
           <Route
-            path="track"
+            path="track/:id"
             element={
               <TrackingFormView
                 setData={(data) => setData(data)}

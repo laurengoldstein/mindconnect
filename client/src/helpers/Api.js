@@ -48,11 +48,12 @@ class Api {
   }
 
   /**
-   * General purpose GET (for URLs like /members-only)
+   * PUT for updating User profile
    **/
 
-  static async getContent(url) {
-    return await this._doFetch(url);
+  static async updateUserProfile(input) {
+    let body = { input };
+    return await this._doFetch(`/user/${input.id}`, "PUT", body);
   }
 
   /**
