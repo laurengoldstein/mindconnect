@@ -82,7 +82,7 @@ function TrackingFormView(props) {
       .catch((error) => {
         console.log(`Server error: ${error.message}`);
       });
-    navigate("/progress");
+    navigate(`/progress/${props.user.id}`);
   };
 
   console.log(todaysData);

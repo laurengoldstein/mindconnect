@@ -125,25 +125,12 @@ function App() {
           />
           <Route
             path="progress/:id"
-            element={
-              <ProgressView
-                user={user}
-                data={data}
-                // userTrackedItems={userTrackedItems}
-                // setMonth={(selectedMonth) => setMonth(selectedMonth)}
-                // setStart={(start) => setStart(start)}
-                // setEnd={(end) => setEnd(end)}
-              />
-            }
+            element={<ProgressView user={user} data={data} />}
           />
           <Route
             path="track/:id"
             element={
-              <TrackingFormView
-                setData={(data) => setData(data)}
-                user={user}
-                // userTrackedItemsCb={userTrackedItemsCb}
-              />
+              <TrackingFormView setData={(data) => setData(data)} user={user} />
             }
           />
           <Route path="*" element={<Error404View />} />
