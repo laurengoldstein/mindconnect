@@ -56,12 +56,13 @@ function ensureSameUser(req, res, next) {
     // If we get here, a valid token was passed
 
     if (payload.userId === Number(req.params.id)) {
+      console.log("ESU ID CHECK", payload.userId, req.params.id);
       next();
     } else {
       res.status(403).send({ error: "Forbidden" });
     }
   } catch (err) {
-    console.log("POTATO", err);
+    console.log("ESU CATCH ERROR", err);
     res.status(401).send({ error: "Unauthorized" });
   }
 }

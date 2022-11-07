@@ -64,22 +64,24 @@ router.get("/:id", ensureSameUser, function (req, res) {
 });
 // ensureSameUser,
 /* PUT - modify existing user */
-router.put("/:id", async function (req, res) {
+router.put("/:id", ensureSameUser, async function (req, res) {
   console.log("REQ");
   let userID = Number(req.params.id);
-  let { firstName, lastName, password, email, tracked_items_id } = req.body;
+  let { firstName, lastName, password, email, tracked_items } = req.body;
+  console.log("BEFORE HASHED PW");
   let hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
+  console.log("AFTER HASHED PW", hashedPassword);
   try {
     await db(
       `UPDATE user SET firstName = '${firstName}', lastName = '${lastName}', password = '${hashedPassword}', email ='${email}' WHERE id = ${userID};`
     );
     // Remove user from TRACKED_ITEMS_USER table
     await db(`DELETE FROM tracked_items_user WHERE user_id = ${userID};`);
-    for (let ti of tracked_items_id) {
+    for (let ti of tracked_items) {
       // Lines below add each tracked item associated with the user to the TRACKED_ITEMS_USER table
       await db(
         `INSERT INTO tracked_items_user (user_id, tracked_items_id) VALUES (${userID}, ${Number(
-          ti
+          ti.id
         )})`
       );
     }
