@@ -92,10 +92,11 @@ function App() {
   async function registerAccount(accountInfo) {
     let myresponse = await Api.registerUser(accountInfo);
     if (myresponse.ok) {
-      Local.saveUserInfo(myresponse.data.token, myresponse.data[0]);
-      setUser(myresponse.data[0]);
+      Local.saveUserInfo(myresponse.data.token, myresponse.data.data[0]);
+      console.log("myresponse", myresponse);
+      setUser(myresponse.data.data[0]);
       setLoginErrorMsg("");
-      navigate(`/user/${myresponse.data[0].id}`);
+      navigate(`/user/${myresponse.data.data[0].id}`);
     } else {
       setLoginErrorMsg("Login failed");
     }
