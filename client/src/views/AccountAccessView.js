@@ -12,7 +12,11 @@ function AccountAccessView(props) {
 
       <h2>New to Mindconnect?</h2>
       <h3>Please register to create a user account.</h3>
-      <RegisterForm />
+      <RegisterForm
+        registerAccountCb={(accountInfo) =>
+          props.registerAccountCb(accountInfo)
+        }
+      />
     </div>
   );
 }

@@ -62,10 +62,26 @@ router.get("/:id", ensureSameUser, function (req, res) {
     .then((result) => res.send(joinToJson(result)))
     .catch((err) => res.status(500).send({ error: err.message }));
 });
-//  ensureSameUser,
+
+/* POST new user */
+router.post("/", async function (req, res, next) {
+  let { firstName, lastName, password, email } = req.body["accountInfo"];
+  let hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
+  db(
+    `INSERT INTO user (firstName, lastName, password, email)
+    VALUES ('${firstName}', '${lastName}', '${hashedPassword}', '${email}');
+    SELECT LAST_INSERT_ID();`
+  )
+    .then((data) => {
+      db(`SELECT * FROM user WHERE id=${data.data[0].insertId};`).then(
+        (result) => res.status(201).send(result.data)
+      );
+    })
+    .catch((err) => res.status(500).send({ error: err.message }));
+});
+
 /* PUT - modify existing user */
 router.put("/:id", async function (req, res) {
-  console.log("REQ");
   let userID = Number(req.params.id);
   let { firstName, lastName, email, tracked_items_id } = req.body["input"];
   try {

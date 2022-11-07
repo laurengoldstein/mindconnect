@@ -62,8 +62,6 @@ function App() {
   async function updateProfile(input) {
     let myresponse = await Api.updateUserProfile(input);
     if (myresponse.ok) {
-      console.log("myresponse", myresponse);
-      // Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
       setUser(myresponse.data);
       setErrorMsg("");
       navigate(`/user/${myresponse.data.id}`);
@@ -91,6 +89,19 @@ function App() {
   // navigate(`/user/${user.id}`);
   // }
 
+  async function registerAccount(accountInfo) {
+    let myresponse = await Api.registerUser(accountInfo);
+    if (myresponse.ok) {
+      Local.saveUserInfo(myresponse.data.token, myresponse.data.user);
+      console.log("myresponse", myresponse.data);
+      setUser(myresponse.data);
+      setLoginErrorMsg("");
+      navigate(`/user/${myresponse.data[0].id}`);
+    } else {
+      setLoginErrorMsg("Login failed");
+    }
+  }
+
   return (
     <div className="App container">
       <img className="Logo" src="Logo.png" alt="Mind Connect Logo" />
@@ -104,7 +115,12 @@ function App() {
           <Route
             path="/account"
             element={
-              <AccountAccessView loginCb={(email, pw) => login(email, pw)} />
+              <AccountAccessView
+                loginCb={(email, pw) => login(email, pw)}
+                registerAccountCb={(accountInfo) =>
+                  registerAccount(accountInfo)
+                }
+              />
             }
           />
 

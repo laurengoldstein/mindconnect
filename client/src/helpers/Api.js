@@ -57,6 +57,15 @@ class Api {
   }
 
   /**
+   * POST for adding new user
+   **/
+
+  static async registerUser(accountInfo) {
+    let body = { accountInfo };
+    return await this._doFetch(`/user`, "POST", body);
+  }
+
+  /**
    * Private method for internal use only
    **/
 
@@ -77,18 +86,15 @@ class Api {
     if (body) {
       options.headers["Content-Type"] = "application/json";
       options.body = JSON.stringify(body);
-      console.log("fetch body", body);
     }
 
     // Do the fetch() and store the results in a "unified" myresponse obj
     let myresponse = { ok: false, data: null, status: 0, error: "" };
     try {
       let response = await fetch(url, options);
-      console.log("response", response);
       if (response.ok) {
         myresponse.ok = true;
         myresponse.data = await response.json();
-        console.log("fetch response", myresponse.data);
         myresponse.status = response.status;
       } else {
         myresponse.status = response.status;

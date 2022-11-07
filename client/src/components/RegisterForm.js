@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-function RegisterForm() {
+function RegisterForm(props) {
   let [registerFormData, setRegisterFormData] = useState([]);
 
   function handleChange(event) {
@@ -17,7 +17,7 @@ function RegisterForm() {
   function handleSubmit(event) {
     event.preventDefault();
     console.log(registerFormData);
-    // props.registerAccountCb(registerFormData);
+    props.registerAccountCb(registerFormData);
   }
   return (
     <form
