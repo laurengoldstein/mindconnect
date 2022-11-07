@@ -62,7 +62,7 @@ function App() {
   async function updateProfile(input) {
     let myresponse = await Api.updateUserProfile(input);
     if (myresponse.ok) {
-      // console.log(myresponse.data.user); RETRIEVED user obj
+      console.log(myresponse.data.user);
       setErrorMsg("");
       navigate(`/user/${myresponse.data.user.id}`);
     } else {

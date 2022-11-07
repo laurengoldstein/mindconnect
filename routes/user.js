@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const bcrypt = require("bcrypt");
-const { BCRYPT_WORK_FACTOR, SECRET_KEY } = require("../config");
+const { BCRYPT_WORK_FACTOR } = require("../config");
 const { ensureSameUser } = require("../middleware/guards");
 const db = require("../model/helper.js");
 
@@ -62,26 +62,24 @@ router.get("/:id", ensureSameUser, function (req, res) {
     .then((result) => res.send(joinToJson(result)))
     .catch((err) => res.status(500).send({ error: err.message }));
 });
-// ensureSameUser,
+//  ensureSameUser,
 /* PUT - modify existing user */
-router.put("/:id", ensureSameUser, async function (req, res) {
+router.put("/:id", async function (req, res) {
   console.log("REQ");
   let userID = Number(req.params.id);
-  let { firstName, lastName, password, email, tracked_items } = req.body;
-  console.log("BEFORE HASHED PW");
-  let hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
-  console.log("AFTER HASHED PW", hashedPassword);
+  let { firstName, lastName, email, tracked_items_id } = req.body["input"];
   try {
     await db(
-      `UPDATE user SET firstName = '${firstName}', lastName = '${lastName}', password = '${hashedPassword}', email ='${email}' WHERE id = ${userID};`
+      `UPDATE user SET firstName = '${firstName}', lastName = '${lastName}', email ='${email}' WHERE id = ${userID};`
     );
     // Remove user from TRACKED_ITEMS_USER table
     await db(`DELETE FROM tracked_items_user WHERE user_id = ${userID};`);
-    for (let ti of tracked_items) {
+
+    for (let ti of tracked_items_id) {
       // Lines below add each tracked item associated with the user to the TRACKED_ITEMS_USER table
       await db(
         `INSERT INTO tracked_items_user (user_id, tracked_items_id) VALUES (${userID}, ${Number(
-          ti.id
+          ti
         )})`
       );
     }
@@ -96,6 +94,7 @@ router.put("/:id", ensureSameUser, async function (req, res) {
     let result2 = joinToJson(result);
     res.status(201).send(result2);
   } catch (err) {
+    console.log(err);
     res.status(500).send({ error: err.message });
   }
 });

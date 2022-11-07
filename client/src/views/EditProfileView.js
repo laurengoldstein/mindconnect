@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Error404View from "./Error404View";
 import Api from "../helpers/Api";
 import "./EditProfileView.css";
@@ -8,12 +9,20 @@ function EditProfileView(props) {
   let [newIndicator, setNewIndicator] = useState("");
   let [userTrackedItems, setUserTrackedItems] = useState([]);
   let [errorMsg, setErrorMsg] = useState("");
-
-  let tracking = [];
+  let [tracking, setTracking] = useState([]);
+  let { id } = useParams();
 
   useEffect(() => {
     fetchUserTrackedItems();
   }, []);
+
+  useEffect(() => {
+    getTracking();
+  }, [tracking]);
+
+  function getTracking(tracking) {
+    return tracking;
+  }
 
   async function fetchUserTrackedItems() {
     let myresponse = await Api.getUser(`/${props.user.id}`);
@@ -37,31 +46,36 @@ function EditProfileView(props) {
     //Insert previous data for input fields that were left empty
     let modifiedProfile = { ...input };
     modifiedProfile.tracked_items_id = [];
+    // console.log("tracking", tracking);
     for (let e in tracking) {
       let tracked_obj = userTrackedItems.find(
         (t) => t.indicator === tracking[e]
       );
+      // console.log("tracked_obj", tracked_obj);
       modifiedProfile.tracked_items_id.push(tracked_obj.id);
     }
+    // console.log("ti ids", modifiedProfile.tracked_items_id);
     for (let key in props.user) {
       if (!Object.keys(modifiedProfile).includes(key)) {
         modifiedProfile[`${key}`] = `${props.user[key]}`;
       }
     }
+    modifiedProfile.userId = id;
     delete modifiedProfile.id;
     props.updateProfile(modifiedProfile);
-    console.log("modified profile", modifiedProfile);
   }
 
   // changes indicators based on whether they are checked
   function changeIndicators(event) {
     let isChecked = event.target.checked;
+    // console.log("pretracking", tracking);
+    // console.log("ischecked", isChecked);
     if (isChecked) {
-      tracking.push(event.target.name);
-      console.log("tracking", tracking);
-    } else if (!isChecked) {
-      tracking = tracking.filter((e) => e !== event.target.name);
+      setTracking((tracking) => [...tracking, event.target.name]);
+      // } else if (!isChecked) {
+      //   tracking = tracking.filter((e) => e !== event.target.name);
     }
+    // console.log("post-tracking", tracking);
     return tracking;
   }
 
@@ -135,20 +149,8 @@ function EditProfileView(props) {
             />
           </label>
         </div>
-        <div className="mb-2">
-          <label className="blue">
-            Password:
-            <input
-              className="form-control"
-              type="password"
-              name="password"
-              defaultValue={props.user.password || ""}
-              onChange={handleChange}
-            />
-          </label>
-        </div>
 
-        <h3 className="blue">Currently tracking:</h3>
+        <h3 className="blue">Check items you want to keep tracking:</h3>
         <ul className="trackingList">
           {userTrackedItems &&
             userTrackedItems.map((ti) => (
@@ -181,6 +183,19 @@ function EditProfileView(props) {
             onChange={(e) => handleAddNewIndicator(e)}
           />
         </label>
+
+        <div className="mb-2">
+          <label className="blue">
+            Enter your password to confirm changes:
+            <input
+              className="form-control"
+              type="password"
+              name="password"
+              defaultValue={props.user.password || ""}
+              onChange={handleChange}
+            />
+          </label>
+        </div>
 
         <div className="d-flex justify-content-center">
           <button type="submit" className="submit-button button">
