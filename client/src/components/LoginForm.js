@@ -36,7 +36,7 @@ function LoginForm(props) {
         </label>
         <div className="input-group has-validation">
           <input
-            type="text"
+            type="email"
             className="form-control"
             id="validationCustomEmail"
             name="email"

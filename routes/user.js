@@ -102,7 +102,7 @@ router.post("/", async function (req, res, next) {
 });
 
 /* PUT - modify existing user */
-router.put("/:id", async function (req, res) {
+router.put("/:id", ensureSameUser, async function (req, res) {
   let userID = Number(req.params.id);
   let { firstName, lastName, email, tracked_items_id } = req.body["input"];
   try {

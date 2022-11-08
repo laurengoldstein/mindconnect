@@ -137,7 +137,7 @@ function EditProfileView(props) {
             Email:
             <input
               className="form-control"
-              type="text"
+              type="email"
               name="email"
               defaultValue={props.user.email || ""}
               onChange={handleChange}

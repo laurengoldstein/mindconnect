@@ -67,7 +67,7 @@ function RegisterForm(props) {
           </label>
           <div className="input-group has-validation">
             <input
-              type="text"
+              type="email"
               className="form-control"
               id="validationCustomUsername"
               name="email"
