@@ -81,16 +81,17 @@ function ProgressView(props) {
 
   async function fetchCustomDates() {
     if (start.length !== 0 && end.length !== 0) {
-      fetch(
-        `http://localhost:5000/data/custom?user=${props.user.id}&start=${start}&end=${end}`
-      )
-        .then((res) => res.json())
-        .then((json) => {
-          setUserData(json);
-        })
-        .catch((error) => {
-          console.log(`Server error: ${error.message}`);
-        });
+      let myresponse = await Api.getUserData(
+        `${props.user.id}&start=${start}&end=${end}`
+      );
+      if (myresponse.ok) {
+        setUserData(myresponse.data);
+        setErrorMsg("");
+      } else {
+        setUserData([]);
+        let msg = `Error ${myresponse.status}: ${myresponse.error}`;
+        setErrorMsg(msg);
+      }
     }
   }
 
@@ -105,14 +106,6 @@ function ProgressView(props) {
       let msg = `Error ${myresponse.status}: ${myresponse.error}`;
       setErrorMsg(msg);
     }
-    // fetch(`/data/?user=${props.user.id}&month=${month}`)
-    //   .then((res) => res.json())
-    //   .then((json) => {
-    //     setUserData(json);
-    //   })
-    //   .catch((error) => {
-    //     console.log(`Server error: ${error.message}`);
-    //   });
   }
 
   const renderLineChar = (
