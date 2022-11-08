@@ -55,7 +55,7 @@ function LoginForm(props) {
           Password
         </label>
         <input
-          type="text"
+          type="password"
           className="form-control"
           id="validationCustomPassword"
           name="password"

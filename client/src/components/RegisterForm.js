@@ -85,7 +85,7 @@ function RegisterForm(props) {
             Password
           </label>
           <input
-            type="text"
+            type="password"
             className="form-control"
             id="validationCustom03"
             name="password"
