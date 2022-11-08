@@ -70,24 +70,18 @@ function App() {
       setErrorMsg(msg);
     }
   }
-  // console.log(input);
-  // fetch(`/user/${user.id}`, {
-  //   method: "PUT",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify(input),
-  // })
-  //   .then((res) => {
-  //     res.json().then((json) => {
-  //       setUser(json);
-  //     });
-  //   })
-  //   .catch((error) => {
-  //     console.log(`Server error: ${error.message}`);
-  //   });
-  // navigate(`/user/${user.id}`);
-  // }
+
+  async function addUserData(dailyData) {
+    let myresponse = await Api.addUserData(dailyData);
+    if (myresponse.ok) {
+      console.log("myresponse", myresponse);
+      setData(myresponse.data.data[0]);
+      setLoginErrorMsg("");
+      navigate(`/progress/${myresponse.data.data[0].id}`);
+    } else {
+      setLoginErrorMsg("Login failed");
+    }
+  }
 
   async function registerAccount(accountInfo) {
     let myresponse = await Api.registerUser(accountInfo);
@@ -146,7 +140,11 @@ function App() {
           <Route
             path="track/:id"
             element={
-              <TrackingFormView setData={(data) => setData(data)} user={user} />
+              <TrackingFormView
+                setData={(data) => setData(data)}
+                user={user}
+                addUserDataCb={(dailyData) => addUserData(dailyData)}
+              />
             }
           />
           <Route path="*" element={<Error404View />} />

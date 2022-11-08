@@ -25,10 +25,6 @@ function TrackingFormView(props) {
     setValue(defaultValues);
   }
 
-  // function userTrackedItemsCb(userTrackedItems) {
-  //   return userTrackedItems;
-  // }
-
   useEffect(() => {
     fetchUserTrackedItems();
   }, []);
@@ -46,6 +42,8 @@ function TrackingFormView(props) {
   }
 
   const addData = (values) => {
+    let currMonth = new Date().toISOString().slice(0, 7);
+    let currDay = new Date().toISOString().slice(0, 10);
     //Transform data into desired format for post
     let tracked = [];
     // Object.keys returns an array of the keys in an object
@@ -59,32 +57,39 @@ function TrackingFormView(props) {
         value: +values[inds[i]],
       };
       tracked.push(obj);
-    }
-
-    //Post new data
-    let currMonth = new Date().toISOString().slice(0, 7);
-    fetch("/data", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+      let dailyData = {
         tracked_obj: tracked,
         user_id: props.user.id,
-        month: currMonth,
-      }),
-    })
-      .then((res) => {
-        res.json().then((json) => {
-          props.setData(json);
-        });
-      })
-      .catch((error) => {
-        console.log(`Server error: ${error.message}`);
-      });
-    navigate(`/progress/${props.user.id}`);
+        date: currDay,
+      };
+      setTodaysData(dailyData);
+      props.addUserDataCb(dailyData);
+    }
   };
 
+  //Post new data
+
+  //   fetch("/data", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       tracked_obj: tracked,
+  //       user_id: props.user.id,
+  //       month: currMonth,
+  //     }),
+  //   })
+  //     .then((res) => {
+  //       res.json().then((json) => {
+  //         props.setData(json);
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.log(`Server error: ${error.message}`);
+  //     });
+  //   navigate(`/progress/${props.user.id}`);
+  // };
   console.log(todaysData);
   //Add coditional here
   if (todaysData.length === 0) {

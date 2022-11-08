@@ -9,21 +9,21 @@ const db = require("../model/helper");
  * Register a user
  **/
 
-router.post("/register", async (req, res) => {
-  let { firstName, lastName, password, email } = req.body;
-  let hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
+// router.post("/register", async (req, res) => {
+//   let { firstName, lastName, password, email } = req.body;
+//   let hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
-  try {
-    let sql = `
-            INSERT INTO user (firstName, lastName, password, email)
-            VALUES ('${firstName}', '${lastName}', '${hashedPassword}', '${email}')
-        `;
-    await db(sql);
-    res.send({ message: "Registration succeeded" });
-  } catch (err) {
-    res.status(500).send({ error: err.message });
-  }
-});
+//   try {
+//     let sql = `
+//             INSERT INTO user (firstName, lastName, password, email)
+//             VALUES ('${firstName}', '${lastName}', '${hashedPassword}', '${email}')
+//         `;
+//     await db(sql);
+//     res.send({ message: "Registration succeeded" });
+//   } catch (err) {
+//     res.status(500).send({ error: err.message });
+//   }
+// });
 
 /**
  * Log in a user

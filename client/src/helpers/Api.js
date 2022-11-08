@@ -66,6 +66,15 @@ class Api {
   }
 
   /**
+   * POST for adding user data
+   **/
+
+  static async addUserData(input) {
+    let body = { input };
+    return await this._doFetch(`/data/${input.user_id}`, "POST", body);
+  }
+
+  /**
    * Private method for internal use only
    **/
 

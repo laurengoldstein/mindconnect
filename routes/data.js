@@ -104,8 +104,8 @@ router.get("/data/custom", function (req, res, next) {
 });
 
 /* POST new data */
-router.post("/data", function (req, res, next) {
-  let { tracked_obj, user_id } = req.body;
+router.post("/data/:id", ensureSameUser, function (req, res, next) {
+  let { tracked_obj, user_id } = req.body["input"];
   //Check how many tracked_items_id and reapeat db x counter
   for (let ti in tracked_obj) {
     db(
