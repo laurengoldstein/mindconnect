@@ -75,9 +75,9 @@ function App() {
     let myresponse = await Api.addUserData(dailyData);
     if (myresponse.ok) {
       console.log("myresponse", myresponse);
-      setData(myresponse.data.data[0]);
+      setData(myresponse.data);
       setLoginErrorMsg("");
-      navigate(`/progress/${myresponse.data.data[0].id}`);
+      navigate(`/progress/${user.id}`);
     } else {
       setLoginErrorMsg("Login failed");
     }
