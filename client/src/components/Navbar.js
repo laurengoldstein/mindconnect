@@ -9,7 +9,7 @@ function Navbar(props) {
         {/* "Brand"/logo */}
         <a className="navbar-brand" href="/">
           <img
-            src="./White_Logo.png"
+            src="../White_Logo.png"
             alt="mind-connect white logo"
             id="white-logo"
           />

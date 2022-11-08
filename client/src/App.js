@@ -98,7 +98,7 @@ function App() {
 
   return (
     <div className="App container">
-      <img className="Logo" src="Logo.png" alt="Mind Connect Logo" />
+      <img className="Logo" src="../Logo.png" alt="Mind Connect Logo" />
 
       <Navbar user={user} logoutCb={logout} />
 
