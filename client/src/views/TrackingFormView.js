@@ -140,7 +140,7 @@ function TrackingFormView(props) {
     return (
       <div className="text-center mb-5">
         <h2 className="blue my-5">You are all set for today!</h2>
-        <Link to="/progress">
+        <Link to={`/progress/${props.user.id}`}>
           <button type="button">See your progress</button>
         </Link>
       </div>
