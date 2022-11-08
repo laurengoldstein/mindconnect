@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import "./RegisterForm.css";
 
 function RegisterForm(props) {
   let [registerFormData, setRegisterFormData] = useState([]);
@@ -25,7 +26,7 @@ function RegisterForm(props) {
       noValidate
       onSubmit={handleSubmit}
     >
-      <div className="col-md-4">
+      <div className="col-md-6">
         <label htmlFor="validationCustom01" className="form-label">
           First name
         </label>
@@ -40,7 +41,7 @@ function RegisterForm(props) {
         />
         <div className="valid-feedback">Looks good!</div>
       </div>
-      <div className="col-md-4">
+      <div className="col-md-6">
         <label htmlFor="validationCustom02" className="form-label">
           Last name
         </label>
@@ -55,7 +56,7 @@ function RegisterForm(props) {
         />
         <div className="valid-feedback">Looks good!</div>
       </div>
-      <div className="col-md-4">
+      <div className="col-md-5">
         <label htmlFor="validationCustomUsername" className="form-label">
           Email
         </label>
@@ -74,7 +75,7 @@ function RegisterForm(props) {
           </div>
         </div>
       </div>
-      <div className="col-md-6">
+      <div className="col-md-7">
         <label htmlFor="validationCustom03" className="form-label">
           Password
         </label>

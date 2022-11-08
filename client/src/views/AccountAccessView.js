@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import RegisterForm from "../components/RegisterForm";
 import LoginForm from "../components/LoginForm";
+import "./AccountAccessView.css";
 
 function AccountAccessView(props) {
   return (

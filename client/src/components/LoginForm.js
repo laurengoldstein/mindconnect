@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 
 function LoginForm(props) {
   let [email, setEmail] = useState("");
@@ -31,7 +30,7 @@ function LoginForm(props) {
       noValidate
       onSubmit={handleSubmit}
     >
-      <div className="col-md-4">
+      <div className="col-md-5">
         <label htmlFor="validationCustomEmail" className="form-label">
           Email
         </label>
@@ -51,7 +50,7 @@ function LoginForm(props) {
         </div>
       </div>
 
-      <div className="col-md-6">
+      <div className="col-md-7">
         <label htmlFor="validationCustomPassword" className="form-label">
           Password
         </label>
