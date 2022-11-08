@@ -110,11 +110,11 @@ function EditProfileView(props) {
   }
 
   return (
-    <div className="d-flex flex-column mx-5 py-5">
+    <div className="d-flex flex-column mx-5">
       <h2 className="blue">Edit profile:</h2>
       <form onSubmit={(e) => handleSubmit(e)}>
         <div className="mb-2">
-          <label className="blue">
+          <label className="blue w-100">
             First name:
             <input
               className="form-control"
@@ -126,7 +126,7 @@ function EditProfileView(props) {
           </label>
         </div>
         <div className="mb-2">
-          <label className="blue">
+          <label className="blue w-100">
             Last name:
             <input
               className="form-control"
@@ -138,7 +138,7 @@ function EditProfileView(props) {
           </label>
         </div>
         <div className="mb-2">
-          <label className="blue">
+          <label className="blue w-100">
             Email:
             <input
               className="form-control"
@@ -150,7 +150,9 @@ function EditProfileView(props) {
           </label>
         </div>
 
-        <h3 className="blue">Check items you want to keep tracking:</h3>
+        <label className="blue mt-4 mb-2">
+          Check items you want to keep tracking:
+        </label>
         <ul className="trackingList">
           {userTrackedItems &&
             userTrackedItems.map((ti) => (
@@ -185,16 +187,16 @@ function EditProfileView(props) {
         </label>
 
         <div className="mb-2">
-          <label className="blue">
+          <label className="blue w-100 mb-2">
             Enter your password to confirm changes:
-            <input
-              className="form-control"
-              type="password"
-              name="password"
-              defaultValue={props.user.password || ""}
-              onChange={handleChange}
-            />
           </label>
+          <input
+            className="form-control"
+            type="password"
+            name="password"
+            defaultValue={props.user.password || ""}
+            onChange={handleChange}
+          />
         </div>
 
         <div className="d-flex justify-content-center">

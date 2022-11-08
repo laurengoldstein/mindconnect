@@ -1,6 +1,5 @@
 h2 {
   text-align: center;
-  margin-top: 1em;
 }
 
 h3 {
@@ -11,4 +10,8 @@ h3 {
 .submit-button {
   width: fit-content;
   padding: 5px 10px;
+}
+
+.Registerh2 {
+  margin-top: 1em;
 }

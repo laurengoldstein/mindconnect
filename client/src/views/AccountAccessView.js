@@ -11,7 +11,7 @@ function AccountAccessView(props) {
       <h3>Please login to access your account.</h3>
       <LoginForm loginCb={(email, pw) => props.loginCb(email, pw)} />
 
-      <h2>New to Mindconnect?</h2>
+      <h2 className="Registerh2">New to Mindconnect?</h2>
       <h3>Please register to create a user account.</h3>
       <RegisterForm
         registerAccountCb={(accountInfo) =>
