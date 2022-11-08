@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const { ensureSameUser, ensureUserLoggedIn } = require("../middleware/guards");
+const { ensureSameUser } = require("../middleware/guards");
 const db = require("../model/helper.js");
 
 /*Optional filters for get function */
@@ -68,7 +68,7 @@ function joinToJson(result) {
 }
 
 /* GET data with optional filters*/
-router.get("/data", function (req, res, next) {
+router.get("/data/", ensureSameUser, function (req, res, next) {
   // Get data with tracked items indicators (ie: anxiety level)
   let sql = `
             SELECT data.*, tracked_items.*

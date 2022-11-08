@@ -96,14 +96,23 @@ function ProgressView(props) {
 
   //Gets user's data for a specified month
   async function fetchMonthData() {
-    fetch(`/data/?user=${props.user.id}&month=${month}`)
-      .then((res) => res.json())
-      .then((json) => {
-        setUserData(json);
-      })
-      .catch((error) => {
-        console.log(`Server error: ${error.message}`);
-      });
+    let myresponse = await Api.getUserData(`${props.user.id}&month=${month}`);
+    if (myresponse.ok) {
+      setUserData(myresponse.data);
+      setErrorMsg("");
+    } else {
+      setUserData([]);
+      let msg = `Error ${myresponse.status}: ${myresponse.error}`;
+      setErrorMsg(msg);
+    }
+    // fetch(`/data/?user=${props.user.id}&month=${month}`)
+    //   .then((res) => res.json())
+    //   .then((json) => {
+    //     setUserData(json);
+    //   })
+    //   .catch((error) => {
+    //     console.log(`Server error: ${error.message}`);
+    //   });
   }
 
   const renderLineChar = (
