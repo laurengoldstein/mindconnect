@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./RegisterForm.css";
 
+let EMPTY_FORM = {
+  tracked_items_id: [1, 2, 3],
+};
+
 function RegisterForm(props) {
-  let [registerFormData, setRegisterFormData] = useState([]);
+  let [registerFormData, setRegisterFormData] = useState(EMPTY_FORM);
 
   function handleChange(event) {
     const value = event.target.value;
@@ -17,7 +21,7 @@ function RegisterForm(props) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    console.log(registerFormData);
+    console.log("handleSubmit", registerFormData);
     props.registerAccountCb(registerFormData);
   }
   return (

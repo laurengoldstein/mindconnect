@@ -66,7 +66,8 @@ router.get("/:id", ensureSameUser, function (req, res) {
 
 /* POST new user */
 router.post("/", async function (req, res, next) {
-  let { firstName, lastName, password, email } = req.body["accountInfo"];
+  let { firstName, lastName, password, email, tracked_items_id } =
+    req.body["accountInfo"];
   let hashedPassword = await bcrypt.hash(password, BCRYPT_WORK_FACTOR);
 
   try {
@@ -75,6 +76,16 @@ router.post("/", async function (req, res, next) {
         VALUES ('${firstName}', '${lastName}', '${hashedPassword}', '${email}');
         SELECT LAST_INSERT_ID();`
     );
+
+    for (let ti of tracked_items_id) {
+      // Lines below add each tracked item associated with the user to the TRACKED_ITEMS_USER table
+      await db(
+        `INSERT INTO tracked_items_user (user_id, tracked_items_id) VALUES (${
+          results.data[0].insertId
+        }, ${Number(ti)});`
+      );
+    }
+
     let result = await db(
       `SELECT * FROM user WHERE id=${results.data[0].insertId};`
     );
@@ -89,19 +100,6 @@ router.post("/", async function (req, res, next) {
     res.status(500).send({ error: err.message });
   }
 });
-
-//   db(
-//     `INSERT INTO user (firstName, lastName, password, email)
-//     VALUES ('${firstName}', '${lastName}', '${hashedPassword}', '${email}');
-//     SELECT LAST_INSERT_ID();`
-//   )
-//     .then((data) => {
-//       db(`SELECT * FROM user WHERE id=${data.data[0].insertId};`).then(
-//         (result) => res.status(201).send(result.data)
-//       );
-//     })
-//     .catch((err) => res.status(500).send({ error: err.message }));
-// });
 
 /* PUT - modify existing user */
 router.put("/:id", async function (req, res) {

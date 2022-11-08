@@ -68,14 +68,14 @@ function EditProfileView(props) {
   // changes indicators based on whether they are checked
   function changeIndicators(event) {
     let isChecked = event.target.checked;
-    // console.log("pretracking", tracking);
-    // console.log("ischecked", isChecked);
+    console.log("pretracking", tracking);
+    console.log("ischecked", isChecked);
     if (isChecked) {
       setTracking((tracking) => [...tracking, event.target.name]);
       // } else if (!isChecked) {
       //   tracking = tracking.filter((e) => e !== event.target.name);
     }
-    // console.log("post-tracking", tracking);
+    console.log("post-tracking", tracking);
     return tracking;
   }
 
@@ -180,7 +180,7 @@ function EditProfileView(props) {
           <input
             className="form-control"
             type="text"
-            placeholder="Add new indicator"
+            placeholder="Add new item"
             defaultValue={newIndicator}
             onChange={(e) => handleAddNewIndicator(e)}
           />
