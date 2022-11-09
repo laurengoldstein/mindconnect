@@ -89,6 +89,7 @@ router.get("/data/", ensureSameUser, function (req, res, next) {
 
 /* GET data with custom date filter*/
 router.get("/data/custom", ensureSameUser, function (req, res, next) {
+  console.log("REQ QUERY", req.query);
   let sql = `
             SELECT data.*, tracked_items.*
             FROM data

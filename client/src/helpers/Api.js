@@ -47,6 +47,10 @@ class Api {
     return await this._doFetch(`/data/?user=${id}`);
   }
 
+  static async getCustomUserData(id) {
+    return await this._doFetch(`/data/custom/?user=${id}`);
+  }
+
   /**
    * PUT for updating User profile
    **/
@@ -73,10 +77,6 @@ class Api {
     let body = { input };
     return await this._doFetch(`/data/${input.user_id}`, "POST", body);
   }
-
-  /**
-   * Private method for internal use only
-   **/
 
   static async _doFetch(url, method = "GET", body = null) {
     // Prepare fetch() options

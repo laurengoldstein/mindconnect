@@ -80,8 +80,9 @@ function ProgressView(props) {
   }
 
   async function fetchCustomDates() {
+    console.log("start", start, "end", end);
     if (start.length !== 0 && end.length !== 0) {
-      let myresponse = await Api.getUserData(
+      let myresponse = await Api.getCustomUserData(
         `${props.user.id}&start=${start}&end=${end}`
       );
       if (myresponse.ok) {
