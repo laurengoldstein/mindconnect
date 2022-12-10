@@ -4,7 +4,15 @@ Mind Connect is a mental health tracker designed for patients who need to track 
 Users can track mental health-related symptoms on a scale from 0 to 10 and visualize their evolution on a line graph.
 Users can input their own mental health indicators and filter the plotted data based on month or by choosing a custom time frame.
 
+IN THIS FORK THE FOLLOWING FEATURE WAS ADDED:
 In order to protect user information, authorization and authentication features are in place. Users must create a new account to start using this app and must log in to access, update and input their personal data.
+
+
+
+
+https://user-images.githubusercontent.com/110904967/206856416-a5af755a-fc9b-4303-840b-6d437fd3a712.mov
+
+
 
 
 ## Getting started with Mind Connect
